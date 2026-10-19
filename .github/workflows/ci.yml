@@ -30,3 +30,16 @@ jobs:
           grep -q "Total scored cells 1452, rises 355" folds_out.txt
       - name: Reference rules run
         run: python src/baseline.py
+      - name: Reference table matches the documented counts
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          table = pd.read_csv("outputs/baseline_folds.csv")
+          assert list(table["cells"]) == [472, 472, 508], table["cells"].tolist()
+          assert list(table["covered"]) == [270, 448, 488], table["covered"].tolist()
+          assert int(table["rises"].sum()) == 355, table["rises"].sum()
+          print("reference table matches the documented counts")
+          PY
+      - name: Demo app starts without an exception
+        run: |
+          python -c "from streamlit.testing.v1 import AppTest; at = AppTest.from_file('app.py', default_timeout=120).run(); assert not at.exception, at.exception"
