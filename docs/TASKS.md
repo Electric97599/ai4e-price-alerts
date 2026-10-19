@@ -3,20 +3,47 @@
 Twelve tasks, one owner each, matching the timeline table in the proposal. The GitHub
 issues carry the same numbers, so `Closes #3` in a commit closes the row here.
 
-| Week | Task | Owner | Issue | Done when |
-|---|---|---|---|---|
-| 10 | Seasonal baseline with coverage and the balanced market check | Ogunkoya | #1 | `python src/baseline.py` prints 270 / 448 / 488 coverage and the 29 of 53 market check |
-| 10 | Frozen snapshot verified by script | Ogunkoya | #2 | `python scripts/check_data.py` passes from a fresh clone |
-| 11 | SARIMA pipeline, one model per series | Abodunrin | #3 | `outputs/sarima_scores.csv` exists for all three folds |
-| 11 | LightGBM pipeline with the exchange rate switch | Abodunrin | #4 | `outputs/lightgbm_scores.csv` exists, both variants |
-| 11 | Monthly scorer for the newest month | Abodunrin | #5 | `outputs/alerts.csv` holds one row per series and month |
-| 12 | Fold runner and calibration harness | Bizima | #6 | `python src/run_folds.py` prints the fold table for any score file |
-| 12 | Exchange rate feature builder | Bizima | #7 | Panel gains a rate column, and the LightGBM ablation reproduces from scratch |
-| 13 | Penalty sensitivity and subgroup tables | Dufitumukiz | #8 | `python src/report_tables.py` writes k = 1, 3, 5 and state and commodity tables |
-| 13 | Timing and memory of a full pass | Dufitumukiz | #9 | `python src/resources.py` prints wall clock and peak memory per fold |
-| 14 | Demo app wired to the live alert file | Abodunrin | #10 | Streamlit Cloud link works from a phone, alert queue reads `alerts.csv` |
-| 14 | Final report and slides | All | #11 | 8 page report and 10 slides, numbers regenerated from the scripts |
-| 15 | Presentation rehearsal and delivery | All | #12 | Fifteen minutes plus questions, app running |
+| Week | Task | Owner | Issue | Depends on | Done when |
+|---|---|---|---|---|---|
+| 10 | Seasonal baseline with coverage and the balanced market check | Ogunkoya | #1 | nothing, the panel exists | `python src/baseline.py` prints 270 / 448 / 488 coverage and the 29 of 53 market check |
+| 10 | Frozen snapshot verified by script | Ogunkoya | #2 | nothing | `python scripts/check_data.py` passes from a fresh clone |
+| 10 | Exchange rate feature builder | Bizima | #7 | nothing, the rate file is frozen | `outputs/panel_fx.csv` exists and every scored month has a rate |
+| 10 | Fold runner and calibration harness | Bizima | #6 | #1 only to test against its score file | `python src/run_folds.py` reproduces the reference numbers |
+| 11 | SARIMA pipeline, one model per series | Abodunrin | #3 | #1 and #6 for comparison, not to build | `outputs/sarima_scores.csv` exists for all three folds |
+| 11 | LightGBM pipeline, without the rate | Abodunrin | #4 | #1 and #6 for comparison | `outputs/lightgbm_scores.csv` exists for all three folds |
+| 12 | LightGBM with the rate, the ablation half of #4 | Abodunrin | #4 | #7 must land first | `outputs/lightgbm_fx_scores.csv` exists and the two variants differ only by that column |
+| 12 | Monthly scorer for the newest month | Abodunrin | #5 | #3 and #4, the models it loads | `outputs/alerts.csv` holds one row per series and month |
+| 13 | Penalty sensitivity and subgroup tables | Dufitumukiz | #8 | #6, and scored results from #3 and #4 | `python src/report_tables.py` writes k = 1, 3, 5 and the subgroup tables |
+| 13 | Timing and memory of a full pass | Dufitumukiz | #9 | #3 and #4, the runs being timed | `python src/resources.py` prints wall clock and peak memory per fold |
+| 14 | Demo app wired to the live alert file | Abodunrin | #10 | #5 for alerts, #6 for the fold table | Streamlit Cloud link works from a phone, alert queue reads `alerts.csv` |
+| 14 | Final report and slides | All | #11 | #6, #8, #9, #10, plus #2 for the reproducibility claim | 8 page report and 10 slides, numbers regenerated from the scripts |
+| 15 | Presentation rehearsal and delivery | All | #12 | #10 and #11 | Fifteen minutes plus questions, app running |
+
+## What blocks what, in one line
+
+Four tasks have no blocker and can start the same day: **#1, #2, #7 and #6**. Everything
+else waits on one of them.
+
+The longest chain, and therefore the one that decides whether the group finishes, is:
+
+```
+#1 baseline ─┐
+             ├─ #3 SARIMA ─┐
+             └─ #4 model  ─┴─ #5 scorer ── #10 app ── #11 report ── #12 talk
+                    ▲                                  ▲
+             #7 rate ┘                                 │
+             #6 fold runner ──── #8 tables ───────────┤
+                            └──── #9 timing ───────────┘
+```
+
+Two consequences worth acting on rather than discovering in week 13:
+
+- **#7 is a week 10 task, not week 12.** The rate ablation is a week 12 deliverable, so
+  the feature builder has to exist before it. Building it early costs Bizima a day and
+  removes the only place where the schedule folds back on itself.
+- **#5 is the gate for the demo.** The app cannot show a queue until the scorer writes
+  one. A stub `alerts.csv` in week 12, filled by the real models in week 13, keeps #10
+  and #11 unblocked while the models finish.
 
 ## Standing rules
 
