@@ -1,6 +1,6 @@
 # Task board
 
-Eleven tasks, one owner each, matching the timeline table in the proposal. The GitHub
+Twelve tasks, one owner each, matching the timeline table in the proposal. The GitHub
 issues carry the same numbers, so `Closes #3` in a commit closes the row here.
 
 | Week | Task | Owner | Issue | Done when |
@@ -16,6 +16,7 @@ issues carry the same numbers, so `Closes #3` in a commit closes the row here.
 | 13 | Timing and memory of a full pass | Dufitumukiz | #9 | `python src/resources.py` prints wall clock and peak memory per fold |
 | 14 | Demo app wired to the live alert file | Abodunrin | #10 | Streamlit Cloud link works from a phone, alert queue reads `alerts.csv` |
 | 14 | Final report and slides | All | #11 | 8 page report and 10 slides, numbers regenerated from the scripts |
+| 15 | Presentation rehearsal and delivery | All | #12 | Fifteen minutes plus questions, app running |
 
 ## Standing rules
 
