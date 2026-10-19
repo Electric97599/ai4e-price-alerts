@@ -8,6 +8,11 @@
 Both are week 10 and neither waits on anybody. They are also what everyone else compares
 against, so finishing #1 early unblocks the modelling tasks.
 
+Your starter file for #2 already exists: `scripts/check_data.py` runs, profiles the price
+file, and stops at the one function left to you, `verify_checksums`, which raises
+`NotImplementedError("issue #2: ...")`. `src/baseline.py` for #1 is the working script you
+extend.
+
 ## Read in this order
 
 1. `AGENTS.md`: the rules, the numbers that must not drift, and the conventions.

@@ -13,11 +13,17 @@ You also own the repository itself, so you merge the pull requests.
 
 1. `AGENTS.md`: the rules and the numbers that must not drift.
 2. `docs/CONTEXT.md`: the model list, the folds and the measures.
-3. `src/folds.py`: the windows and the `series, mi, score` shape every model writes.
-4. `src/metrics.py`: `choose_threshold` is the only place a threshold may come from.
-5. `src/baseline.py`: the reference numbers your models must beat at the same cap.
-6. `README.md`, section "Modelling rules the proposal leaves to the repository", for the
+3. `src/contracts.py`: the `series, mi, score` file every model writes, with validation, so
+   your models cannot ship a NaN or a duplicate cell.
+4. `src/folds.py`: the windows and the month index convention.
+5. `src/metrics.py`: `choose_threshold` is the only place a threshold may come from.
+6. `src/baseline.py`: the reference numbers your models must beat at the same cap.
+7. `README.md`, section "Modelling rules the proposal leaves to the repository", for the
    SARIMA order rule, the LightGBM feature list and the gap rule you agreed to.
+
+Your three model files do not exist yet, which is your work; write each one to end with
+`contracts.write_scores(frame, "outputs/<model>_scores.csv")` and Bizima's harness will pick
+it up without changes.
 
 ## What each task produces
 

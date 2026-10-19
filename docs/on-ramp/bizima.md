@@ -7,6 +7,10 @@
 - **#7 Exchange rate feature builder**, week 10, because the week 12 ablation in #4 cannot
   start until the rate exists as a model ready column.
 
+Both starters exist and run: `src/run_folds.py` does the loading, validation, label join and
+fold slicing, then stops at `score_fold`, and `src/features_fx.py` prints the rate coverage
+and stops at `attach_rate`. Run them first to see exactly what is missing.
+
 ## Read in this order
 
 1. `AGENTS.md`: the rules and the numbers that must not drift.

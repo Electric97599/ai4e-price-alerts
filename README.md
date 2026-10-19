@@ -49,6 +49,12 @@ src/fx.py           downloads the CBN daily rates, freezes them, builds monthly 
 src/folds.py        the three fold windows and the scored cell convention
 src/metrics.py      every measure in the proposal, with self tests
 src/baseline.py     seasonal naive and persistence reference rules
+src/contracts.py    the series, mi, score file every model writes, with validation
+src/run_folds.py    STARTER #6: fold table from any score file (Bizima)
+src/features_fx.py  STARTER #7: rate feature joined to the panel (Bizima)
+src/report_tables.py STARTER #8: penalty grids and subgroup tables (Dufitumukiz)
+src/resources.py    STARTER #9: wall clock and peak memory (Dufitumukiz)
+scripts/check_data.py STARTER #2: checksums and price file profile (Ogunkoya)
 app.py              Streamlit demo: price history, alert queue, fold results
 docs/TASKS.md       who does what, and when it counts as done
 docs/CONTEXT.md     the research design in plain words, for people and their assistants

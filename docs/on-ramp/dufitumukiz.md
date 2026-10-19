@@ -9,6 +9,10 @@ Both run on the results the modelling tasks produce, so start by building the co
 the reference output in `outputs/baseline_scores.csv`. When the real model score files
 appear, the same scripts run unchanged.
 
+Both starters exist and run: `src/report_tables.py` reads the fold table and stops at
+`penalty_table`, and `src/resources.py` prints the machine and library versions and stops at
+the peak memory measurement. Run them first to see exactly what is missing.
+
 ## Read in this order
 
 1. `AGENTS.md`: the rules and the numbers that must not drift.
