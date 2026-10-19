@@ -21,6 +21,11 @@ rule, which needs a year-earlier price and carries its coverage.
 Task board: `docs/TASKS.md`, mirrored as GitHub issues with one owner each. Working
 rules, including the branch and pull request loop, are in `CONTRIBUTING.md`.
 
+**Working with an AI assistant, or new to the project?** Read `AGENTS.md` first, then
+`docs/CONTEXT.md` for the design in plain words, then your own sheet in `docs/on-ramp/`.
+Those three files exist so a teammate's assistant does not have to guess the conventions
+or invent a number.
+
 ## Quickstart
 
 ```
@@ -46,6 +51,9 @@ src/metrics.py      every measure in the proposal, with self tests
 src/baseline.py     seasonal naive and persistence reference rules
 app.py              Streamlit demo: price history, alert queue, fold results
 docs/TASKS.md       who does what, and when it counts as done
+docs/CONTEXT.md     the research design in plain words, for people and their assistants
+docs/on-ramp/       one sheet per teammate: your task, your files, what to read first
+AGENTS.md           what an AI assistant must read before editing anything
 outputs/panel.csv   the panel itself, one row per commodity, state and month pair
 outputs/baseline_scores.csv   scored cells with both reference scores
 ```
