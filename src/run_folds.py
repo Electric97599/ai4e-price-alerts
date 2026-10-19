@@ -133,6 +133,9 @@ def main():
         rows.append(score_fold(block, fold["fold"]))
 
     table = pd.DataFrame(rows)
+    if table.empty:
+        raise SystemExit("no fold produced a result: the score file covers none of the fold "
+                         "windows, so nothing was written")
     table.to_csv(OUT, index=False)
     print(table.to_string(index=False))
     print("\nwrote %s" % os.path.relpath(OUT, ROOT))

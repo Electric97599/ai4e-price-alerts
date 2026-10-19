@@ -29,12 +29,26 @@ import folds as folds_mod          # noqa: E402
 import metrics as metrics_mod      # noqa: E402
 
 PANEL = os.path.join(ROOT, "outputs", "panel.csv")
+MONTHLY = os.path.join(ROOT, "outputs", "monthly.csv")
 OUT = os.path.join(ROOT, "outputs", "baseline_scores.csv")
 
 
 def price_lookup(panel):
-    """Price of every commodity and state in every month it reports, keyed by month."""
-    frame = panel[["commodity", "admin1", "mi", "price_kg"]].drop_duplicates(
+    """The price of every commodity and state in every month it reports.
+
+    Read from outputs/monthly.csv, which panel.py writes for every observed month of every
+    eligible series. Reading the pair-only panel.csv instead loses a year-earlier price
+    whenever that month's own previous month is missing, which understates the seasonal
+    rule's coverage: 230/404/466 cells against the correct 270/448/488.
+    """
+    if os.path.exists(MONTHLY):
+        frame = pd.read_csv(MONTHLY)
+    else:
+        print("warning: %s is missing, falling back to the pair-only panel, which "
+              "understates seasonal coverage. Run python src/panel.py first."
+              % os.path.relpath(MONTHLY, ROOT))
+        frame = panel
+    frame = frame[["commodity", "admin1", "mi", "price_kg"]].drop_duplicates(
         subset=["commodity", "admin1", "mi"])
     return {(c, s, m): p for c, s, m, p in frame.itertuples(index=False, name=None)}
 
@@ -96,6 +110,11 @@ def main():
     scored = pd.concat(kept, ignore_index=True)
     scored[["series", "commodity", "admin1", "mi", "fold", "price_kg", "prev_price_kg",
             "actual_change", "rise", "naive_score", "persistence_score"]].to_csv(OUT, index=False)
+    # The fold table is written as well, because the frozen threshold lives here and the
+    # demo app must not recompute it: a threshold chosen off the scored cells would be the
+    # exact mistake the calibration rule exists to prevent.
+    fold_out = os.path.join(ROOT, "outputs", "baseline_folds.csv")
+    pd.DataFrame(rows).to_csv(fold_out, index=False)
 
     print("fold  cells  rises  covered  threshold  recall   fpr   alerts  MAE naive  MAE persist")
     for r in rows:
@@ -104,6 +123,7 @@ def main():
               % (r["fold"], r["cells"], r["rises"], r["covered"], thr,
                  r["recall"], r["fpr"], r["alerts"], r["mae_naive"], r["mae_persistence"]))
     print("\nwrote %s (%d scored cells)" % (os.path.relpath(OUT, ROOT), len(scored)))
+    print("wrote %s (frozen thresholds and the reference results)" % os.path.relpath(fold_out, ROOT))
     print("The seasonal rule cannot cover every cell, so it is scored on the cells where a "
           "year-earlier price exists. Report any model beside it on those same cells.")
 

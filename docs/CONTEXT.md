@@ -87,10 +87,10 @@ one step kind.
 
 ## What the reference rules already show
 
-Run `python src/baseline.py`. The seasonal rule catches 5.6, 27.4 and 71.4 percent of rises
-across the three folds, but its realized false alarm rate is 2.1, 23.3 and 56.6 percent
+Run `python src/baseline.py`. The seasonal rule catches 4.8, 27.1 and 75.0 percent of rises
+across the three folds, but its realized false alarm rate is 2.4, 21.5 and 65.2 percent
 against a target of ten, because a threshold set a year earlier does not survive a market
-that moves. Its average miss in monthly change is 0.55, 0.40 and 0.39 against 0.14, 0.13 and
+that moves. Its average miss in monthly change is 0.54, 0.41 and 0.40 against 0.14, 0.13 and
 0.13 for persistence.
 
 That drift is the difficulty the project exists to measure. It is also the floor: a learned

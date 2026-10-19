@@ -56,6 +56,8 @@ Done when rerunning the script gives the same picture.
 ## Paste this into your AI assistant
 
 > Read AGENTS.md, docs/CONTEXT.md and docs/on-ramp/dufitumukiz.md before touching anything.
-> My tasks are issues #8 and #9. Build against outputs/baseline_scores.csv first. Every
-> table must state its cell count, and the penalty weights must be described as assumptions.
+> My tasks are issues #8 and #9. Build against outputs/baseline_scores.csv first. Do not
+> edit src/metrics.py, src/folds.py or src/contracts.py: the penalty and the mean absolute
+> error already live in metrics.py and must be called, not reimplemented. Every table must
+> state its cell count, and the penalty weights must be described as assumptions.
 > Show me the command output behind every number.

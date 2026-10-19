@@ -27,6 +27,7 @@ ROOT = os.path.dirname(HERE)
 DATA = os.path.join(ROOT, "data", "nigeria", "wfp_food_prices_nga.csv")
 OUT_DIR = os.path.join(ROOT, "outputs")
 OUT = os.path.join(OUT_DIR, "panel.csv")
+MONTHLY_OUT = os.path.join(OUT_DIR, "monthly.csv")
 
 # A rise counts when the price goes up by this much or more in one month.
 RISE_THRESHOLD = 0.10
@@ -213,8 +214,15 @@ def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     cols = ["commodity", "admin1", "mi", "price_kg", "prev_price_kg", "change", "rise", "markets", "quotes"]
     panel[panel["key"].isin(keep)][cols].to_csv(OUT, index=False)
+    # The monthly series is written too, because a rule may need a price that exists but
+    # does not sit on a consecutive pair (the seasonal rule needs the price twelve months
+    # back, whose own previous month may be missing). Without this file a reader cannot
+    # reproduce the coverage column above.
+    monthly[monthly["key"].isin(keep)][["commodity", "admin1", "mi", "price_kg", "markets", "quotes"]] \
+        .sort_values(["commodity", "admin1", "mi"]).to_csv(MONTHLY_OUT, index=False)
     print()
     print("panel written  : %s (eligible series only)" % OUT)
+    print("monthly written: %s (every observed month, eligible series only)" % MONTHLY_OUT)
 
 
 if __name__ == "__main__":

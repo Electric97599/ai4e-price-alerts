@@ -1,0 +1,10 @@
+# Normalise text files so a Windows checkout does not break the data checks
+* text=auto eol=lf
+
+# Data snapshots are compared by checksum, so their bytes must survive a clone
+data/nigeria/*.csv -text
+data/nigeria/SHA256SUMS -text
+
+# Word and Excel files are binary
+*.xlsx binary
+*.pdf binary

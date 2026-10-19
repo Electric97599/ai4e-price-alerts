@@ -33,8 +33,9 @@ and stops at `attach_rate`. Run them first to see exactly what is missing.
 - Write `outputs/fold_table.csv`, and refuse a score file containing a NaN score or a month
   outside the folds rather than silently dropping rows.
 
-Done when `python src/run_folds.py --scores outputs/baseline_scores.csv` reproduces what
-`src/baseline.py` prints.
+Done when `python src/run_folds.py --scores outputs/baseline_scores.csv --column naive_score`
+reproduces what `src/baseline.py` prints. The `--column` flag is needed because the reference
+file carries more than one score; a model file will simply have `score`.
 
 ## Task #7, what to build
 

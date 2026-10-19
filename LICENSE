@@ -20,7 +20,5 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-The data in data/nigeria/ is not covered by this licence. The World Food Programme
-price files are published under CC BY-IGO and the Central Bank of Nigeria rate series
-is public data; see data/nigeria/DATA.md for the source, the retrieval date and the
-required attribution.
+The data in data/nigeria/ is not covered by this licence. See the Licence section of
+README.md.

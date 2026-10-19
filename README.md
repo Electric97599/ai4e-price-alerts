@@ -31,6 +31,7 @@ or invent a number.
 ```
 git clone https://github.com/Electric97599/ai4e-price-alerts.git
 cd ai4e-price-alerts
+python -m venv .venv       # Python 3.11 to 3.13; 3.14 has no wheel for the pinned pins
 pip install -r requirements.txt
 python src/panel.py        # rebuild the panel, print the Table 1 counts
 python src/baseline.py     # reference rules, writes outputs/baseline_scores.csv
@@ -42,7 +43,6 @@ streamlit run app.py       # the demo app
 ```
 Proposal_LaTeX/     main.tex and references.bib, the proposal source
 Group 10_AI4E_Proposal.pdf   the submitted proposal
-AI4E_Proposal_overleaf.zip                the same source for Overleaf
 data/nigeria/       frozen WFP extract, frozen CBN rate series, checksums, provenance
 src/panel.py        builds the evaluation panel and prints the Table 1 counts
 src/fx.py           downloads the CBN daily rates, freezes them, builds monthly averages
@@ -61,7 +61,9 @@ docs/CONTEXT.md     the research design in plain words, for people and their ass
 docs/on-ramp/       one sheet per teammate: your task, your files, what to read first
 AGENTS.md           what an AI assistant must read before editing anything
 outputs/panel.csv   the panel itself, one row per commodity, state and month pair
+outputs/monthly.csv every observed month of the eligible series, so gaps stay visible
 outputs/baseline_scores.csv   scored cells with both reference scores
+outputs/baseline_folds.csv    the frozen thresholds and the reference results per fold
 ```
 
 ## Reproduce
@@ -116,6 +118,13 @@ fixed here rather than in the two page proposal because they are implementation 
 - **Price flags**: every flag in the source file is retained (actual, aggregate, and the
   combined label). The balanced market check controls which markets report; it does not
   remove the shift from quotations to aggregates, so that shift is stated as a limit.
+
+## Licence
+
+The code is MIT licensed; see `LICENSE`. The data is not: the World Food Programme price
+files are published under CC BY-IGO and the Central Bank of Nigeria rate series is public
+data. `data/nigeria/DATA.md` records the source, the retrieval date and the attribution
+each one requires.
 
 ## Build the proposal
 

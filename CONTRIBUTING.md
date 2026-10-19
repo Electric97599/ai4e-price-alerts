@@ -15,8 +15,9 @@ streamlit run app.py
 ```
 
 If `streamlit run app.py` opens a browser tab with the price history, the setup worked.
-Ask for access before cloning if the clone asks for a password: the owner adds you as a
-collaborator by email or by GitHub username.
+Use Python 3.11 to 3.13; the pins in `requirements.txt` have no wheel for 3.14 and pip will
+try to build them from source. Cloning needs no access, because the repository is public.
+Pushing does: accept the collaborator invite the owner sends, or `git push` returns 403.
 
 ## 2. The loop for every task
 
@@ -73,8 +74,9 @@ Two files are shared and nobody edits them alone, because every model depends on
 
 ```
 python src/metrics.py      # self tests
-python src/folds.py        # 1,452 cells and 355 rises
+python src/panel.py        # 1,452 cells, 355 rises, 24.4 percent
+python src/folds.py        # the same counts, window by window
 python src/baseline.py     # the reference numbers
 ```
 
-CI runs the same three commands on every push, so a red check means one of them broke.
+CI runs those four commands on every push, so a red check means one of them broke.

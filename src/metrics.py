@@ -41,7 +41,11 @@ def recall(scores, rises, threshold):
 
 def false_positive_rate(scores, rises, threshold):
     c = confusion(scores, rises, threshold)
-    return c["fp"] / (c["fp"] + c["tn"]) if (c["fp"] + c["tn"]) else float("nan")
+    denominator = c["fp"] + c["tn"]
+    # No non-rise cell means no false alarm is possible, which is a rate of zero rather
+    # than an undefined number. Returning NaN here made choose_threshold give up and
+    # return "never alert" on an all-rise calibration set.
+    return c["fp"] / denominator if denominator else 0.0
 
 
 def choose_threshold(scores, rises, max_fpr=MAX_FPR):
@@ -53,18 +57,21 @@ def choose_threshold(scores, rises, max_fpr=MAX_FPR):
     """
     scores = np.asarray(scores, dtype=float)
     rises = np.asarray(rises, dtype=int)
-    candidates = np.unique(scores)[::-1]        # highest first
-    candidates = np.append(candidates, np.inf)  # never alert
-    best = None
+    if scores.size == 0:
+        raise ValueError("choose_threshold needs at least one calibration cell")
+    if not np.isfinite(scores).all():
+        raise ValueError("scores must be finite: %d non-finite values"
+                         % int((~np.isfinite(scores)).sum()))
+    candidates = np.append(np.unique(scores)[::-1], np.inf)
+    best_threshold, best_recall = None, -1.0
     for thr in candidates:
         r = recall(scores, rises, thr)
         f = false_positive_rate(scores, rises, thr)
-        if np.isnan(r) or np.isnan(f) or f > max_fpr + 1e-12:
+        if not np.isfinite(r) or not np.isfinite(f) or f > max_fpr + 1e-12:
             continue
-        key = (r, thr)
-        if best is None or key > best[0]:
-            best = (key, thr)
-    return float("inf") if best is None else float(best[1])
+        if r > best_recall or (r == best_recall and thr > best_threshold):
+            best_threshold, best_recall = float(thr), float(r)
+    return float("inf") if best_threshold is None else best_threshold
 
 
 def precision_recall_area(scores, rises):
@@ -137,6 +144,19 @@ def _self_test():
 
     # Mean absolute error is in change units, so identical predictions score zero.
     assert mean_absolute_error([0.1, -0.1], [0.1, -0.1]) == 0.0
+
+    # A NaN in the score column must be refused, not turned into a "never alert" rule.
+    try:
+        choose_threshold([float("nan"), 0.1, 0.2], [1, 1, 0], max_fpr=0.10)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("choose_threshold accepted a NaN score")
+
+    # An all-rise calibration set has no non-rise cell, so no false alarm is possible.
+    assert false_positive_rate([0.1, 0.2], [1, 1], 0.0) == 0.0
+    assert choose_threshold([0.1, 0.2], [1, 1], max_fpr=0.10) == 0.1
+
     print("metrics self test passed")
 
 

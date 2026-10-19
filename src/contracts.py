@@ -29,7 +29,18 @@ SCORE_COLUMNS = ["series", "mi", "score"]
 LABEL_COLUMNS = ["series", "mi", "rise"]
 
 
-def validate_scores(frame, name="scores"):
+def fold_months():
+    """Every outcome month that belongs to a fold window, calibration and scored."""
+    import folds as folds_mod
+    months = set()
+    for fold in folds_mod.FOLDS:
+        for part in ("calibration", "scored"):
+            start, end = fold[part]
+            months.update(range(folds_mod.mi_of(start), folds_mod.mi_of(end) + 1))
+    return months
+
+
+def validate_scores(frame, name="scores", check_folds=True):
     """Return the frame with only the three score columns, or raise with the reason."""
     missing = [c for c in SCORE_COLUMNS if c not in frame.columns]
     if missing:
@@ -39,12 +50,25 @@ def validate_scores(frame, name="scores"):
     if out.empty:
         raise ValueError("%s is empty" % name)
     if out["score"].isna().any():
-        raise ValueError("%s has %d NaN scores; drop the row or fix the model, but do not "
-                         "write it" % (name, int(out["score"].isna().sum())))
+        raise ValueError("%s has %d NaN scores; omit the row instead, so coverage stays "
+                         "visible" % (name, int(out["score"].isna().sum())))
+    try:
+        out["score"] = out["score"].astype(float)
+    except (TypeError, ValueError):
+        raise ValueError("%s has a score that is not a number" % name)
     if not np.isfinite(out["score"]).all():
         raise ValueError("%s has infinite scores" % name)
+    if out["mi"].isna().any() or (out["mi"] != out["mi"].astype(int)).any():
+        raise ValueError("%s has a month index that is not a whole number" % name)
+    out["mi"] = out["mi"].astype(int)
     if out.duplicated(subset=["series", "mi"]).any():
         raise ValueError("%s has duplicate series and month rows" % name)
+    if check_folds:
+        outside = sorted(set(out["mi"]) - fold_months())
+        if outside:
+            raise ValueError("%s has %d month(s) outside every fold window, the first being "
+                             "%d; a score file covers the six fold windows only"
+                             % (name, len(outside), outside[0]))
     return out
 
 

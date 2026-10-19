@@ -56,8 +56,10 @@ wrong. Current output, verified 19 October 2026:
 | 3 | Jun 2024 | Jul 2024 to Jun 2025 | Jul 2025 to Jun 2026 | 46 (44 scored) | 508 | 84 | 488 |
 | all | | | | | 1,452 | 355 | |
 
-Rise rate over the scored cells: 24.4 percent, against 19.8 percent over the unrestricted
-three-state panel. A rise counts when the month-on-month increase is at least 10 percent,
+Rise rate over the scored cells: 24.4 percent. Inside the three scored windows the
+unrestricted three-state panel gives the same 1,452 cells and the same 24.4 percent, so the
+eligibility rule changes which series are followed into the windows, not the base rate they
+are scored on. A rise counts when the month-on-month increase is at least 10 percent,
 so a change of exactly ten percent counts. The last column counts the scored cells where a
 price from twelve months earlier exists, which is what the seasonal naive rule needs.
 
@@ -85,18 +87,29 @@ scored windows. That is 29 of the 53 markets in the three states, leaving 43 ser
 ## Exchange rate snapshot
 
 - `cbn_nfem_usd_daily.csv`: CBN official daily US dollar rates, one row per date after
-  dropping duplicate dates, columns `date`, `ngn_per_usd` (central rate), `buyingrate`,
-  `sellingrate`. 6,081 rows from 2001-12-10 to 2026-10-19.
+  dropping duplicate dates, columns `date`, `ngn_per_usd` (the central rate, midway between
+  the buying and selling quotes except where noted below), `buyingrate`, `sellingrate`.
+  6,081 rows from 2001-12-10 to 2026-10-19. The series is the pegged official rate before
+  June 2023 and the NFEM market rate from then on, so the name NFEM is exact only for the
+  later part; one continuous series is kept because the model needs one column.
 - `cbn_nfem_usd_monthly.csv`: monthly mean of `ngn_per_usd` with a `days` count, 299 rows
   from 2001-12 to 2026-10. All 36 months in the three scored windows are present.
 - Regenerate with `python src/fx.py`. Checksums for both files are in `SHA256SUMS`.
+- Known defect in the source feed: on 2003-12-09 the central rate is 1376.80 against a
+  buying rate of 136.30 and a selling rate of 137.30, a transcription error that lifts
+  December 2003 from 136.72 to 195.77. Six rows in total sit outside their own quote band,
+  all before 2017 and none inside a scored window, so no reported result depends on them.
+  The snapshot is kept exactly as downloaded rather than edited, and `src/fx.py` now warns
+  when a row falls outside the band so a refresh surfaces it.
 
 The bank's monthly average table (`/rates/exrate.html`) stops in April 2021, which is why
 the daily table is used and averaged here.
 
 ## Price flags
 
-Every `priceflag` value is kept: `actual`, `aggregate`, and the combined label. The share
-of retail mass-unit rows flagged aggregate rises from about 46 percent in 2022 to 66
-percent in 2023 and 100 percent from 2024, so this is a genuine limit on the comparison
-rather than something the balanced market check removes.
+Every `priceflag` value is kept: `actual`, `aggregate`, and the combined label. Among the
+retail mass-unit rows the panel is built from, the aggregate flag covers 86.6 percent of
+2022 rows, 73.0 percent of 2023, 100 percent of 2024 and 2025, and 96.1 percent of 2026, so
+a price in the later years is usually a market aggregate rather than a single quotation.
+That is a genuine limit on the comparison rather than something the balanced market check
+removes.

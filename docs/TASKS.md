@@ -1,18 +1,19 @@
 # Task board
 
-Twelve tasks, one owner each, matching the timeline table in the proposal. The GitHub
-issues carry the same numbers, so `Closes #3` in a commit closes the row here.
+Twelve issues, one owner each, matching the timeline table in the proposal. The table has
+thirteen rows because #4 spans two weeks: the model lands in week 11, the exchange-rate
+ablation in week 12. `Closes #3` in a commit closes the row here.
 
 | Week | Task | Owner | Issue | Depends on | Done when |
 |---|---|---|---|---|---|
-| 10 | Seasonal baseline with coverage and the balanced market check | Ogunkoya | #1 | nothing, the panel exists | `python src/baseline.py` prints 270 / 448 / 488 coverage and the 29 of 53 market check |
+| 10 | Seasonal baseline with coverage and the balanced market check | Ogunkoya | #1 | nothing, the panel exists | `python src/baseline.py` prints 270 / 448 / 488 coverage and `python src/panel.py` prints the 29 of 53 market check |
 | 10 | Frozen snapshot verified by script | Ogunkoya | #2 | nothing | `python scripts/check_data.py` passes from a fresh clone |
 | 10 | Exchange rate feature builder | Bizima | #7 | nothing, the rate file is frozen | `outputs/panel_fx.csv` exists and every scored month has a rate |
-| 10 | Fold runner and calibration harness | Bizima | #6 | #1 only to test against its score file | `python src/run_folds.py` reproduces the reference numbers |
+| 10 | Fold runner and calibration harness | Bizima | #6 | #1 only to test against its score file | `python src/run_folds.py --scores outputs/baseline_scores.csv --column naive_score` reproduces the reference numbers |
 | 11 | SARIMA pipeline, one model per series | Abodunrin | #3 | #1 and #6 for comparison, not to build | `outputs/sarima_scores.csv` exists for all three folds |
 | 11 | LightGBM pipeline, without the rate | Abodunrin | #4 | #1 and #6 for comparison | `outputs/lightgbm_scores.csv` exists for all three folds |
 | 12 | LightGBM with the rate, the ablation half of #4 | Abodunrin | #4 | #7 must land first | `outputs/lightgbm_fx_scores.csv` exists and the two variants differ only by that column |
-| 12 | Monthly scorer for the newest month | Abodunrin | #5 | #3 and #4, the models it loads | `outputs/alerts.csv` holds one row per series and month |
+| 11 | Monthly scorer for the newest month | Abodunrin | #5 | #3 and #4, the models it loads | `outputs/alerts.csv` holds one row per series and month |
 | 13 | Penalty sensitivity and subgroup tables | Dufitumukiz | #8 | #6, and scored results from #3 and #4 | `python src/report_tables.py` writes k = 1, 3, 5 and the subgroup tables |
 | 13 | Timing and memory of a full pass | Dufitumukiz | #9 | #3 and #4, the runs being timed | `python src/resources.py` prints wall clock and peak memory per fold |
 | 14 | Demo app wired to the live alert file | Abodunrin | #10 | #5 for alerts, #6 for the fold table | Streamlit Cloud link works from a phone, alert queue reads `alerts.csv` |
