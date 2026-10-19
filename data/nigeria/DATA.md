@@ -1,0 +1,102 @@
+# AI4E project data: Nigerian staple food prices
+
+## Source
+
+World Food Programme price database, published for Nigeria on the Humanitarian Data
+Exchange by WFP on behalf of FEWS NET and the FAO food price monitoring service.
+
+- Dataset page: https://data.humdata.org/dataset/wfp-food-prices-for-nigeria
+- Prices file: https://data.humdata.org/dataset/42db041f-7aaf-4ab4-961f-2a12096861e7/resource/12b51155-0cd3-4806-9924-61ede4077591/download/wfp_food_prices_nga.csv
+- Markets file: https://data.humdata.org/dataset/42db041f-7aaf-4ab4-961f-2a12096861e7/resource/5329e772-0b74-4f65-8cc0-37a0915cc7e4/download/wfp_markets_nga.csv
+- Licence: Creative Commons Attribution for Intergovernmental Organisations (CC BY-IGO)
+- Retrieved: 19 October 2026, when the publisher's file carried a modification date of 18 October 2026
+
+## What is here
+
+| File | Rows | Contents |
+|---|---|---|
+| `wfp_food_prices_nga.csv` | 88,391 | Market prices, January 2002 to October 2026, 68 markets, 43 commodities, 14 states, naira with a USD column |
+| `wfp_markets_nga.csv` | market lookup | Market identifiers with coordinates and administrative units |
+| `SHA256SUMS` | | Checksums of both files as retrieved |
+
+The prices file is the frozen snapshot used by the proposal. It must not be replaced
+in place. If WFP publishes a newer extract, download it to a dated filename instead,
+so the reported counts keep reproducing.
+
+## Columns that matter for the panel
+
+- `pricetype`: Retail or Wholesale. The project keeps retail only.
+- `unit`: mixed. KG, `100 KG`, `50 KG`, `400 G` and similar are converted to naira per
+  kilogram. Litres, pieces and tubers are dropped because they are not a mass.
+- `priceflag`: `actual` for a single collected quotation, `aggregate` for a computed
+  monthly figure. Most rows since 2024 are aggregates, so the panel unit is a market
+  month aggregate, not an individual sale.
+- `usdprice`: the price converted at the prevailing rate. This is not used as the
+  exchange-rate input. The proposal takes that from the Central Bank of Nigeria official
+  daily naira rates, averaged by month (https://www.cbn.gov.ng/rates/exchratebycurrency.html).
+  The CBN monthly average table on the same site stops in April 2021, which is why the
+  daily series is used instead. The central rate column is the one averaged. The feed
+  returns duplicate rows on a few dates, so daily rows must be deduplicated by date
+  before averaging.
+
+## Reproducing the panel
+
+```
+python src/panel.py
+```
+
+The script prints the counts that appear in Table 1 of the proposal and writes
+`outputs/panel.csv`. If the printed counts disagree with the proposal, the proposal is
+wrong. Current output, verified 19 October 2026:
+
+| Fold | Fit through | Calibration | Scored | Eligible series | Cells | Rises | Naive lag |
+|---|---|---|---|---|---|---|---|
+| 1 | Jun 2022 | Jul 2022 to Jun 2023 | Jul 2023 to Jun 2024 | 46 (44 scored) | 472 | 181 | 270 |
+| 2 | Jun 2023 | Jul 2023 to Jun 2024 | Jul 2024 to Jun 2025 | 46 (44 scored) | 472 | 90 | 448 |
+| 3 | Jun 2024 | Jul 2024 to Jun 2025 | Jul 2025 to Jun 2026 | 46 (44 scored) | 508 | 84 | 488 |
+| all | | | | | 1,452 | 355 | |
+
+Rise rate over the scored cells: 24.4 percent, against 19.8 percent over the unrestricted
+three-state panel. A rise counts when the month-on-month increase is at least 10 percent,
+so a change of exactly ten percent counts. The last column counts the scored cells where a
+price from twelve months earlier exists, which is what the seasonal naive rule needs.
+
+## Eligibility rule
+
+A series enters the panel only if, using data available no later than June 2022, it has
+at least 48 monthly price observations. The cut-off sits before the first calibration
+period opens in July 2022, so neither a calibration month nor a scored month can
+influence which series take part. The count is taken on the monthly series, before the
+consecutive-month filter, so a single gap does not disqualify a series. Counting
+consecutive pairs instead gives 43 series, which is why that variant is printed by the
+script: it shows where a different count comes from.
+
+The rule leaves 46 series across 24 commodities in Borno, Yobe and Adamawa. A persistence
+rule, repeating last month's price, is available on every cell and serves as the
+full-coverage baseline.
+
+## Balanced market check
+
+Reporting shifts from individual quotations to market aggregates around 2024, so the
+analysis is repeated on markets that report at least one quotation in each of the three
+scored windows. That is 29 of the 53 markets in the three states, leaving 43 series and
+1,428 scored cells with 351 rises, or 24.6 percent. The script prints these figures.
+
+## Exchange rate snapshot
+
+- `cbn_nfem_usd_daily.csv`: CBN official daily US dollar rates, one row per date after
+  dropping duplicate dates, columns `date`, `ngn_per_usd` (central rate), `buyingrate`,
+  `sellingrate`. 6,081 rows from 2001-12-10 to 2026-10-19.
+- `cbn_nfem_usd_monthly.csv`: monthly mean of `ngn_per_usd` with a `days` count, 299 rows
+  from 2001-12 to 2026-10. All 36 months in the three scored windows are present.
+- Regenerate with `python src/fx.py`. Checksums for both files are in `SHA256SUMS`.
+
+The bank's monthly average table (`/rates/exrate.html`) stops in April 2021, which is why
+the daily table is used and averaged here.
+
+## Price flags
+
+Every `priceflag` value is kept: `actual`, `aggregate`, and the combined label. The share
+of retail mass-unit rows flagged aggregate rises from about 46 percent in 2022 to 66
+percent in 2023 and 100 percent from 2024, so this is a genuine limit on the comparison
+rather than something the balanced market check removes.

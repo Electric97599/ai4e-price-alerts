@@ -1,0 +1,134 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 04-655 A: AI for Engineers, Fall 2026
+% Course Project Proposal, built on the course template (v1.0).
+%
+% Compile with: pdflatex, bibtex, pdflatex, pdflatex.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% DOCUMENT SETUP: Do not change this section.
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm, headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\urlstyle{same}
+
+% Compact section headings so more space goes to content.
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+\titlespacing*{\section}{0pt}{10pt}{4pt}
+\setlist{nosep, leftmargin=*}
+\setlength{\parskip}{4pt}
+\setlength{\intextsep}{3pt}
+\setlength{\parindent}{0pt}
+
+% Running header and page numbers.
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 04-655 A: AI for Engineers, Fall 2026}
+\fancyhead[R]{\small Project Proposal}
+\fancyfoot[C]{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\begin{document}
+
+% TITLE BLOCK
+\begin{center}
+  {\LARGE\bfseries Monthly Staple Price Alerts for North-East Nigeria with a Calibrated 10 Percent False Alarm Target\par}
+  \vspace{4pt}
+  {\normalsize
+  Olufunke Abodunrin (oabodunr), Bukunmi Ogunkoya (bogunkoy)\\[3pt]
+  Jean Chrisostome Dufitumukiz (jeanchrd), Joshua Bizima (jbizima)\\[3pt]
+  Group 10: Agriculture and Food Security\\[3pt]
+  October 19, 2026\par}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}\label{sec:intro}
+
+Food price spikes make procurement planning difficult and can worsen food insecurity \cite{amolegbe2021volatility}. Nigeria ended its gasoline subsidy and shifted to a unified, market-reflective exchange rate in 2023, and the World Bank attributes part of the record inflation that followed to the subsidy removal \cite{worldbank2023ndu}. A firm buying staples forward must decide each month whether to buy or wait: a missed rise costs margin, a needless purchase ties up cash. This project builds a monthly early warning benchmark for staple prices in Borno, Yobe and Adamawa, a prototype that flags for analyst review and does not trigger purchases.
+
+Recent work already compares machine learning, deep learning and time series models on the WFP Nigeria data using lags and walk forward evaluation \cite{ogunjobi2026temporal}, the closest study to this one. Three studies supply context: United States food price inflation nowcasting with machine learning \cite{yan2026foodpolicy}, regional early warnings in Indonesia \cite{sumertajaya2024earlywarning}, and exchange rate pass through to Nigerian prices \cite{ugwu2021pass}, which motivates the feature tested here. The question is narrower: whether adding the monthly Central Bank rate changes the pooled model's alerts in each fold, and how each rule performs at a predeclared false positive target.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Problem Statement}\label{sec:problem}
+
+Monthly staple price jumps make procurement planning difficult in Borno, Yobe and Adamawa. A buyer committing each month faces two unequal mistakes: buying before a flat month ties up cash, while waiting through a rise costs margin on every kilogram. An alert that fires every month catches every rise and warns of nothing, which is why a false alarm ceiling matters. This project addresses the gap between forecasting prices and issuing useful alerts by testing whether seasonal na\"ive, per series SARIMA and pooled LightGBM models can flag next month price rises of at least 10 percent, with each alert threshold calibrated on earlier months to a 10 percent false positive rate ceiling. The models are evaluated on later time ordered windows, and LightGBM is also tested with and without the CBN NFEM rate.
+
+\section{Data}\label{sec:data}
+
+The source is the WFP Nigeria food price database on the Humanitarian Data Exchange under CC BY IGO \cite{wfp2026nigeria}, with 88{,}391 records from 2002 to 15 October 2026; retail rows in KG, 100 KG, 50 KG and gram units leave 55{,}510. The panel keeps monthly medians within a state, consecutive months only, with no interpolation, and all three price flags.
+
+Eligibility uses only data before July 2022, when the first calibration period opens: a series needs 48 monthly observations, counted as observations rather than consecutive pairs, so one gap does not disqualify it. That leaves 46 series across 24 commodities, 44 of which contribute scored cells, with 355 rises over the three windows, or 24.4 percent. Three limits are stated: reporting shifts to market aggregates over 2023 and 2024, so the analysis is repeated on the 29 of 53 markets that quote in every scored window, leaving 43 series and 1{,}428 cells with 351 rises; coverage is regional; and with no personal attributes, performance is not reported as fairness claims. Fold 1 calibrates on 260 cells, because 34 of the 46 series have no observation between July 2022 and January 2023.
+
+The rate feature is the monthly average of the Central Bank of Nigeria official daily NFEM naira per dollar rate, its central rate column \cite{cbn2026rates}, taken over the days quoted and only from values dated in that month or earlier; the daily series, monthly averages and checksums sit with the frozen snapshot. The WFP dollar column is not an independent rate observation. A frozen snapshot, its checksum and the preprocessing code accompany the project.
+
+\begin{table}[h!]
+  \centering
+  \footnotesize
+  \renewcommand{\arraystretch}{0.95}
+  \caption{Expanding windows; 46 eligible series, 44 with scored cells; the last column counts cells with a year-earlier price.}
+  \label{tab:folds}
+  \begin{tabularx}{\linewidth}{@{}l l X X r r r@{}}
+    \toprule
+    \textbf{Fold} & \textbf{Fit at start} & \textbf{Calibration} & \textbf{Scored outcome months} & \textbf{Cells} & \textbf{Rises} & \textbf{Naive lag} \\
+    \midrule
+    1 & Jun 2022 & Jul 2022 to Jun 2023 & Jul 2023 to Jun 2024 & 472 & 181 & 270 \\
+    2 & Jun 2023 & Jul 2023 to Jun 2024 & Jul 2024 to Jun 2025 & 472 & 90 & 448 \\
+    3 & Jun 2024 & Jul 2024 to Jun 2025 & Jul 2025 to Jun 2026 & 508 & 84 & 488 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Project Plan and Timeline}\label{sec:plan}
+
+For each state and commodity series with price $P_{s,c,t}$ observed at month $t$, the target is whether the next monthly price rises by at least 10 percent, that is $z_{s,c,t+1} = 1$ when $P_{s,c,t+1}/P_{s,c,t} - 1 \ge 0.10$. Table~\ref{tab:folds} gives each fold's opening fit cut-off, twelve calibration months and twelve scored months. Every rule is refitted at each monthly origin on data up to that month, and its alert score is the predicted percentage change $\hat{P}_{t+1}/P_t - 1$, so an outcome month is forecast from the month before.
+
+Three models are compared: a seasonal naive rule, a per series SARIMA model, and a pooled LightGBM model on price lags, trailing averages, month, state and commodity \cite{ke2017lightgbm}. Only LightGBM runs with and without the rate feature, and persistence, repeating last month's price, is a price error benchmark only. SARIMA orders are chosen by information criterion to each origin, LightGBM uses one to three month lags, and gaps are not imputed. The threshold is chosen per rule and per LightGBM variant on the calibration months: it maximises recall subject to false positives of at most 10 percent among non-rise cells, ties going to the higher threshold, and is then frozen, so the realized rate can drift above target and both rates are reported without retuning. Rules share cells except the seasonal rule, which alerts only where a year-earlier price exists: 270, 448 and 488 of the 472, 472 and 508 cells.
+
+The primary result is rise recall at each frozen threshold with the realized rate. Secondary measures are precision recall area on the cells each rule covers, mean absolute error against the persistence and seasonal rules, and an assumed weighted decision penalty per 1{,}000 cells, where a missed rise counts $k$ and a false alarm counts one, re-weighted at $k = 1$, $3$ and $5$. The weights are assumptions, not measured procurement costs.
+
+The pipeline uses pandas, statsmodels for SARIMA, LightGBM for pooled regression, and scikit-learn for metrics \cite{seabold2010statsmodels,pedregosa2011scikit}, on a CPU laptop, scoring monthly for analyst review rather than automated purchasing. Risks are inconsistent reporting and revisions to published rates; mitigations are to freeze the data and rates with retrieval dates, report coverage, run the balanced check, and fall back on the seasonal rule and LightGBM if SARIMA fits fail to converge. The prototype only flags, so the final report treats it as analyst decision support and covers performance by state and commodity in its responsible AI section.
+
+\begin{table}[h!]
+  \centering
+  \footnotesize
+  \renewcommand{\arraystretch}{0.9}
+  \setlength{\abovecaptionskip}{2pt}
+  \setlength{\belowcaptionskip}{0pt}
+  \caption{Project timeline and responsibilities.}
+  \label{tab:timeline}
+  \begin{tabularx}{\linewidth}{@{}l X l@{}}
+    \toprule
+    \textbf{Week} & \textbf{Milestone and Deliverable} & \textbf{Lead} \\
+    \midrule
+    10 & Snapshot, eligibility rule, seasonal baseline, balanced check & Ogunkoya \\
+    11 & SARIMA and LightGBM pipelines; monthly scoring script & Abodunrin \\
+    12 & Calibration, three folds, exchange rate ablation & Bizima \\
+    13 & Penalty sensitivity, subgroup tables, batch timing & Dufitumukiz \\
+    14 & Robustness checks; final report and slides & All \\
+    15 & Project presentation & All \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% END OF CONTENT.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

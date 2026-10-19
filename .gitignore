@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+
+# LaTeX build products (the PDFs themselves are kept)
+Proposal_LaTeX/*.aux
+Proposal_LaTeX/*.log
+Proposal_LaTeX/*.out
+Proposal_LaTeX/*.bbl
+Proposal_LaTeX/*.blg
+Proposal_LaTeX/*.toc
+
+# Local review state, not part of the shared record
+outputs/review_log.csv
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Superseded drafts stay on the author's machine, never in the repo
+_superseded/
+
+# Course material stays out of the public repo
+AI4E_Proposal_template/
+Projects_AI4E_Description.pdf
+AI4E_Proposal_overleaf.zip
+
+# Personal and class-wide spreadsheets are not shared publicly
+*.xlsx
