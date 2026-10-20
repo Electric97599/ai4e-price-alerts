@@ -38,6 +38,46 @@ python src/baseline.py     # reference rules, writes outputs/baseline_scores.csv
 streamlit run app.py       # the demo app
 ```
 
+## Data sources
+
+The repository ships a frozen snapshot; these are the pages it came from, so a reader can
+check the data without trusting the copy.
+
+| Source | Link | Terms |
+|---|---|---|
+| WFP Nigeria food prices, dataset page | https://data.humdata.org/dataset/wfp-food-prices-for-nigeria | CC BY-IGO |
+| the prices file itself | https://data.humdata.org/dataset/42db041f-7aaf-4ab4-961f-2a12096861e7/resource/12b51155-0cd3-4806-9924-61ede4077591/download/wfp_food_prices_nga.csv | CC BY-IGO |
+| the markets file | https://data.humdata.org/dataset/42db041f-7aaf-4ab4-961f-2a12096861e7/resource/5329e772-0b74-4f65-8cc0-37a0915cc7e4/download/wfp_markets_nga.csv | CC BY-IGO |
+| CBN official daily exchange rates, page | https://www.cbn.gov.ng/rates/exchratebycurrency.html | public data |
+| the feed behind that page | https://www.cbn.gov.ng/api/GetAllExchangeRates | public data |
+
+Both were retrieved on 19 October 2026 and frozen, with checksums in
+`data/nigeria/SHA256SUMS` and provenance in `data/nigeria/DATA.md`. The CBN page carries two
+different tables: the official daily rate since December 2001, and the NFEM market rates since
+December 2024. This project uses the first, and `docs/evidence/rate-series.md` explains why.
+
+To cite them in a report, these are the two entries the proposal uses:
+
+```
+@misc{wfp2026nigeria,
+  author       = {{World Food Programme}},
+  title        = {{Nigeria} - Food Prices},
+  howpublished = {WFP Price Database, Humanitarian Data Exchange,
+                  \url{https://data.humdata.org/dataset/wfp-food-prices-for-nigeria}},
+  year         = {2026},
+  note         = {Licence {CC} {BY-IGO}, accessed: Oct. 19, 2026}
+}
+
+@misc{cbn2026rates,
+  author       = {{Central Bank of Nigeria}},
+  title        = {Exchange Rates: Official Daily Naira Rates},
+  howpublished = {Central Bank of Nigeria,
+                  \url{https://www.cbn.gov.ng/rates/exchratebycurrency.html}},
+  year         = {2026},
+  note         = {Daily rates averaged by month; accessed: Oct. 19, 2026}
+}
+```
+
 ## Layout
 
 ```

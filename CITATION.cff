@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: "If you use this code, cite the repository; the data carries its own attribution, listed below and in data/nigeria/DATA.md."
+title: "Monthly Staple Price Alerts for North-East Nigeria"
+abstract: >-
+  A monthly early warning benchmark for staple food prices in Borno, Yobe and Adamawa, Nigeria.
+  Three rules forecast next month's price change and are turned into alerts at a threshold
+  calibrated on twelve months and frozen for the twelve after, compared on three expanding
+  folds at a ten percent false alarm target.
+type: software
+license: MIT
+repository-code: "https://github.com/Electric97599/ai4e-price-alerts"
+authors:
+  - family-names: Abodunrin
+    given-names: Olufunke
+    affiliation: Carnegie Mellon University Africa
+  - family-names: Ogunkoya
+    given-names: Bukunmi
+    affiliation: Carnegie Mellon University Africa
+  - family-names: Dufitumukiz
+    given-names: Jean Chrisostome
+    affiliation: Carnegie Mellon University Africa
+  - family-names: Bizima
+    given-names: Joshua
+    affiliation: Carnegie Mellon University Africa
+references:
+  - type: dataset
+    title: "Nigeria - Food Prices"
+    authors:
+      - name: "World Food Programme"
+    year: 2026
+    url: "https://data.humdata.org/dataset/wfp-food-prices-for-nigeria"
+    notes: "Licence CC BY-IGO. Retrieved 19 October 2026."
+  - type: dataset
+    title: "Exchange Rates: Official Daily Naira Rates"
+    authors:
+      - name: "Central Bank of Nigeria"
+    year: 2026
+    url: "https://www.cbn.gov.ng/rates/exchratebycurrency.html"
+    notes: "Official daily rate series since December 2001, averaged by month. Retrieved 19 October 2026."
