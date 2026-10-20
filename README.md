@@ -50,6 +50,7 @@ check the data without trusting the copy.
 | the markets file | https://data.humdata.org/dataset/42db041f-7aaf-4ab4-961f-2a12096861e7/resource/5329e772-0b74-4f65-8cc0-37a0915cc7e4/download/wfp_markets_nga.csv | CC BY-IGO |
 | CBN official daily exchange rates, page | https://www.cbn.gov.ng/rates/exchratebycurrency.html | public data |
 | the feed behind that page | https://www.cbn.gov.ng/api/GetAllExchangeRates | public data |
+| a second description of both series, for checking the dates | https://dataminal.com/nigeria/exchange-rate | third party, not a data source |
 
 Both were retrieved on 19 October 2026 and frozen, with checksums in
 `data/nigeria/SHA256SUMS` and provenance in `data/nigeria/DATA.md`. The CBN page carries two
