@@ -100,10 +100,15 @@ months it is used on. Coverage was checked rather than assumed: all 52 months fr
 to September 2026 are present, which covers the three scored windows and the last twelve
 months of data every calibration window needs.
 
-An independent check agrees with the file. The WFP price file carries its own `usdprice`
-column, so local price over usdprice gives an implied rate for every month. Against the
-monthly CBN series across those 52 months, the median ratio is 1.000 and every month is
-within a few percent, including the June and July 2023 devaluation.
+A second check on the same price file points the same way, with one caveat. The WFP file
+carries a `usdprice` column beside `currency` and `price`, so local price over usdprice gives
+an implied rate for every row and, taken as a monthly median, for every month. Against the
+monthly CBN series across the 52 months the folds use, the median ratio is 1.000, and the
+months sit within about a tenth either side of it, including the June and July 2023
+devaluation. That is corroboration rather than independent confirmation, because WFP derives
+`usdprice` by converting at the prevailing official rate itself, so the two series share a
+source. What it does rule out is a misaligned column, a wrong currency or a monthly average
+off by a factor.
 
 What this does and does not mean:
 
