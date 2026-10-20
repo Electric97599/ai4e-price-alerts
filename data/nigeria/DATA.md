@@ -124,6 +124,25 @@ What this does and does not mean:
 
 ## Exchange rate snapshot
 
+Three different links get mixed up on this project, so they are named here once:
+
+- **Where the numbers come from.** `src/fx.py` downloads `https://www.cbn.gov.ng/api/GetAllExchangeRates`,
+  the Central Bank's JSON feed, keeps the `US DOLLAR` rows, drops dates that appear twice,
+  and writes the two CSVs below. Nothing else is a source of these numbers.
+- **The page the paper cites.** `https://www.cbn.gov.ng/rates/exchratebycurrency.html` is the
+  human facing page that displays the same numbers in a grid headed Currency, Date, Buying,
+  Central, Selling. It is the citation because a reference list cites a page rather than an
+  API endpoint, and reference 8 now names the feed in its note as well.
+- **A third party that describes both series.** `https://dataminal.com/nigeria/exchange-rate`
+  restates the start dates in plain words. It is never downloaded from and does not appear in
+  the paper; it is linked in the repository README only as something a reader can check.
+
+The frozen file matches today's feed on all 6,081 dates, with the first row identical
+(2001-12-10, buying 111.85, central 112.35, selling 112.85). Three dates disagree with the
+live feed by a few naira, and the reason is that those dates appear twice in the feed with
+different quotes (2023-12-12, 2024-02-22, 2024-07-02); the snapshot keeps the first copy, so
+the difference is which duplicate was retained, not a correction.
+
 - `cbn_nfem_usd_daily.csv`: CBN official daily US dollar rates, one row per date after
   dropping duplicate dates, columns `date`, `ngn_per_usd` (the central rate, midway between
   the buying and selling quotes except where noted below), `buyingrate`, `sellingrate`.
