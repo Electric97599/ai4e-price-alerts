@@ -111,10 +111,13 @@ fixed here rather than in the two page proposal because they are implementation 
 - **Precision recall area**: computed on the cells each rule covers. Because the seasonal
   rule covers fewer cells, area values are not directly comparable across rules; the
   report also gives common cell results and states coverage next to every score.
-- **Exchange rate**: monthly average of the CBN official daily NFEM naira per dollar rate,
-  taking the central rate column of the daily table, averaged over the days present in
-  each month after removing duplicate dates. The rate for a scored month uses only values
-  dated in that month or earlier.
+- **Exchange rate**: monthly average of the CBN official daily naira per dollar rate, taking
+  the central rate column of the daily table, averaged over the days present in each month
+  after removing duplicate dates. The rate for a scored month uses only values dated in that
+  month or earlier. The series is one continuous column spanning 2001 to today, but the rate
+  it records changes regime in June 2023, from the pegged official rate to a market rate, so
+  the ablation measures whether adding the official rate helps and not whether a free
+  floating rate helps. All 52 months the folds use are present.
 - **Price flags**: every flag in the source file is retained (actual, aggregate, and the
   combined label). The balanced market check controls which markets report; it does not
   remove the shift from quotations to aggregates, so that shift is stated as a limit.

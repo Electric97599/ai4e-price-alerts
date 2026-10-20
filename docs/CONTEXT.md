@@ -23,9 +23,13 @@ while raising few false alarms, and what each kind of mistake costs.
   kilograms, 100 kilogram bags and grams.
 - `data/nigeria/wfp_markets_nga.csv`: the market list, including coordinates.
 - `data/nigeria/cbn_nfem_usd_daily.csv` and `cbn_nfem_usd_monthly.csv`: the Central Bank of
-  Nigeria official daily NFEM naira per dollar rate, taken from the central rate column,
-  duplicate dates removed, averaged by month. Built by `src/fx.py`. The bank's monthly
-  average table stops in April 2021, which is why the daily feed is the source.
+  Nigeria official daily naira per dollar rate, its central rate column, duplicate dates
+  removed and averaged by month. Built by `src/fx.py`. This is the bank's long official
+  series, which runs from December 2001; the NFEM market table is a separate series that
+  begins on 2 December 2024, when the electronic matching system went live. The file name
+  says NFEM because the feature is named that way in the proposal, but the values before
+  June 2023 are the pegged official rate, not a market rate. The bank's monthly average
+  table stops in April 2021, which is why the daily feed is the source.
 - `data/nigeria/DATA.md` records the URLs, the retrieval date, the licence and the meaning
   of every column used. `SHA256SUMS` freezes the bytes.
 

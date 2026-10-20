@@ -84,6 +84,39 @@ analysis is repeated on markets that report at least one quotation in each of th
 scored windows. That is 29 of the 53 markets in the three states, leaving 43 series and
 1,428 scored cells with 351 rises, or 24.6 percent. The script prints these figures.
 
+## Why the rate series starts in 2001 when the NFEM table starts in 2024
+
+The bank publishes two different things, and the file names only mention one of them.
+
+- The **official daily rate** (buying, central, selling) has run since 10 December 2001. That
+  is what `src/fx.py` downloads and what `cbn_nfem_usd_daily.csv` holds.
+- The **NFEM market table** (volume weighted average, high, low, closing, deals, turnover)
+  starts on 2 December 2024, when the electronic matching system replaced the previous
+  market arrangement. It is a separate table on the same page, not a continuation of the
+  first.
+
+The project needs one continuous column, because a model feature cannot be missing for the
+months it is used on. Coverage was checked rather than assumed: all 52 months from June 2022
+to September 2026 are present, which covers the three scored windows and the last twelve
+months of data every calibration window needs.
+
+An independent check agrees with the file. The WFP price file carries its own `usdprice`
+column, so local price over usdprice gives an implied rate for every month. Against the
+monthly CBN series across those 52 months, the median ratio is 1.000 and every month is
+within a few percent, including the June and July 2023 devaluation.
+
+What this does and does not mean:
+
+- It is **not** a problem for 2002 to 2021, because no result uses those years. Every rule is
+  refitted at monthly origins that begin in July 2022.
+- It **is** a real caveat about what the feature means. Before June 2023 the value is a pegged
+  official rate; after it, a market rate. The exchange rate ablation therefore measures
+  whether adding the official rate helps, and it cannot claim to isolate a free floating
+  market rate across the whole span. The report must say that.
+- Restricting the feature to strictly NFEM months is not possible: it would leave July 2022 to
+  November 2024 empty, which is all of fold 1 and half of fold 2. That is the two folds where
+  a devaluation happened, so the ablation would lose exactly the variation it exists to test.
+
 ## Exchange rate snapshot
 
 - `cbn_nfem_usd_daily.csv`: CBN official daily US dollar rates, one row per date after
