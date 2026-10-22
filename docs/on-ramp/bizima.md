@@ -1,7 +1,8 @@
-# On ramp: Joshua Bizima (jbizima)
+# On ramp: Joshua Bizima (Andrew ID jbizima, GitHub jbizima)
 
-## Your two tasks
+## Your three tasks
 
+- **#15 Exchange rate ablation**, week 12: the LightGBM variant with the rate, the half the proposal gives that week to you.
 - **#6 Fold runner and calibration harness**, week 10 to 12. This is the path every model's
   score goes through, so it is the most load bearing file in the repository.
 - **#7 Exchange rate feature builder**, week 10, because the week 12 ablation in #4 cannot
