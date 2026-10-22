@@ -41,8 +41,8 @@ push straight to `main`, because a broken `main` breaks the demo app for everyon
 | `src/panel.py` | Ogunkoya | Builds the evaluation panel and prints the counts in Table 1 of the proposal |
 | `src/baseline.py` | Ogunkoya | Seasonal naive and persistence reference rules, with coverage and the balanced market check |
 | `src/sarima.py` | Abodunrin | One SARIMA per series, refitted at every monthly origin |
-| `src/lightgbm_model.py` | Abodunrin | Pooled LightGBM, with and without the exchange rate |
-| `src/score_latest.py` | Abodunrin | Scores the newest month for every series into `outputs/alerts.csv` |
+| `src/lightgbm_pipeline.py` | Abodunrin | Pooled LightGBM, with and without the exchange rate |
+| `src/score_alerts.py` | Abodunrin | Scores the newest month for every series into `outputs/alerts.csv` |
 | `src/run_folds.py` | Bizima | Runs any scorer through all three folds and writes the fold table |
 | `src/features_fx.py` | Bizima | Turns the frozen CBN rate series into a model ready monthly feature |
 | `src/report_tables.py` | Dufitumukiz | Penalty sensitivity at k = 1, 3, 5 and the subgroup tables |

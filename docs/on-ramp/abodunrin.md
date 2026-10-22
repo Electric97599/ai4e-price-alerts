@@ -1,9 +1,9 @@
-# On ramp: Olufunke Abodunrin (oabodunr)
+# On ramp: Olufunke Abodunrin (Andrew ID oabodunr, GitHub Electric97599)
 
 ## Your four tasks
 
 - **#3 SARIMA pipeline**, week 11.
-- **#4 LightGBM pipeline**, week 11 without the rate, week 12 with it once #7 lands.
+- **#4 LightGBM pipeline without the rate**, week 11. The with-rate ablation is issue #15, which the proposal gives to Bizima in week 12.
 - **#5 Monthly scorer**, week 12, because it needs the models above.
 - **#10 Demo app and deployment**, week 14.
 

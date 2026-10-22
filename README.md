@@ -11,12 +11,12 @@ use the common subset.
 
 ## Team
 
-| Member | Andrew ID | Owns |
-|---|---|---|
-| Olufunke Abodunrin | oabodunr | SARIMA and LightGBM pipelines, monthly scorer, demo app |
-| Bukunmi Ogunkoya | bogunkoy | Panel, seasonal baseline, data provenance |
-| Jean Chrisostome Dufitumukiz | jeanchrd | Penalty sensitivity, subgroup tables, timing |
-| Joshua Bizima | jbizima | Fold runner, exchange rate features |
+| Member | Andrew ID | GitHub | Owns |
+|---|---|---|---|
+| Olufunke Abodunrin | oabodunr | Electric97599 | SARIMA and LightGBM pipelines, monthly scorer, demo app |
+| Bukunmi Ogunkoya | bogunkoy | Kunmi1999 | Panel, seasonal baseline, data provenance |
+| Jean Chrisostome Dufitumukiz | jeanchrd | Chrisos10 | Penalty sensitivity, subgroup tables, timing |
+| Joshua Bizima | jbizima | jbizima | Fold runner, exchange rate features, the week 12 ablation |
 
 Task board: `docs/TASKS.md`, mirrored as GitHub issues with one owner each. Working
 rules, including the branch and pull request loop, are in `CONTRIBUTING.md`.
@@ -151,7 +151,9 @@ fixed here rather than in the two page proposal because they are implementation 
   Each origin uses at most the previous 60 calendar months; selection uses only data through
   that origin. Gaps stay missing. Series with fewer than 24 observed values in the window are
   skipped and reported. Candidate fits reuse the prior month's parameter estimates only as
-  optimizer starting values, then refit and compare AIC again.
+  optimizer starting values, then refit and compare AIC again. A fit that fails to converge
+  is counted in the run log and its cells are left unscored; no seasonal or LightGBM score is
+  substituted, so each rule is compared only on the cells it actually produced.
 - **LightGBM**: pooled model predicting the log one month change; features are price lags
   of one to three months, trailing three and twelve month averages, calendar month,
   state, commodity and the exchange rate when that variant is switched on. Settings are
