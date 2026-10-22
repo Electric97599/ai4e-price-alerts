@@ -16,6 +16,7 @@ Proposal_LaTeX/*.toc
 
 # Local review state, not part of the shared record
 outputs/review_log.csv
+outputs/_resource_runs/
 
 # Editor and OS noise
 .DS_Store

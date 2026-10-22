@@ -4,10 +4,10 @@
 
 The project forecasts next month's retail price for each state and commodity in the
 WFP Nigerian price database and turns that forecast into an alert when a rise of 10
-percent or more is expected. Alerts are calibrated to a target of at most one quiet
-series month in ten, fixed before each scored period with the realized rate reported,
-and every rule is scored on the same cells on months it never saw, except the seasonal
-rule, which needs a year-earlier price and carries its coverage.
+percent or more is expected. Alerts are calibrated to a target false-alarm rate of at most
+ten percent, fixed before each scored period with the realized rate and coverage reported.
+Each rule is evaluated on the cells it can score; comparisons that require matched cells
+use the common subset.
 
 ## Team
 
@@ -33,10 +33,13 @@ git clone https://github.com/Electric97599/ai4e-price-alerts.git
 cd ai4e-price-alerts
 python -m venv .venv       # Python 3.11 to 3.13; 3.14 has no wheel for the pinned pins
 pip install -r requirements.txt
-python src/panel.py        # rebuild the panel, print the Table 1 counts
-python src/baseline.py     # reference rules, writes outputs/baseline_scores.csv
+python src/run_all.py      # full data, model, scoring, alert and report pipeline
 streamlit run app.py       # the demo app
 ```
+
+`python src/run_all.py --skip-resources` runs the same project pipeline without the
+additional per-model, per-fold timing and memory reruns. The full command also writes
+`docs/RESOURCES.md` and `outputs/resources.csv`.
 
 ## Data sources
 
@@ -89,32 +92,40 @@ src/panel.py        builds the evaluation panel and prints the Table 1 counts
 src/fx.py           downloads the CBN daily rates, freezes them, builds monthly averages
 src/folds.py        the three fold windows and the scored cell convention
 src/metrics.py      every measure in the proposal, with self tests
+src/run_all.py      one command to rebuild and connect the coded deliverables
 src/baseline.py     seasonal naive and persistence reference rules
 src/contracts.py    the series, mi, score file every model writes, with validation
-src/run_folds.py    STARTER #6: fold table from any score file (Bizima)
-src/features_fx.py  STARTER #7: rate feature joined to the panel (Bizima)
-src/report_tables.py STARTER #8: penalty grids and subgroup tables (Dufitumukiz)
-src/resources.py    STARTER #9: wall clock and peak memory (Dufitumukiz)
-scripts/check_data.py STARTER #2: checksums and price file profile (Ogunkoya)
-app.py              Streamlit demo: price history, alert queue, fold results
+src/run_folds.py    #6: calibration harness and per-rule fold results (Bizima)
+src/features_fx.py  #7: forecast-origin CBN rate join (Bizima)
+src/sarima.py       #3: per-series SARIMA forecasts (Abodunrin)
+src/lightgbm_pipeline.py #4: pooled LightGBM with/without lagged rate (Abodunrin)
+src/model_config.py fixed model settings for both learned models
+src/score_alerts.py #5: latest scored-month alerts (Abodunrin)
+src/report_tables.py #8: weighted penalties and subgroup tables (Dufitumukiz)
+src/resources.py    #9: per-model/per-fold time and sampled peak memory (Dufitumukiz)
+scripts/check_data.py #2: checksums and price-file profile (Ogunkoya)
+app.py              #10: Streamlit demo reading saved alerts and fold results
 docs/TASKS.md       who does what, and when it counts as done
 docs/CONTEXT.md     the research design in plain words, for people and their assistants
 docs/on-ramp/       one sheet per teammate: your task, your files, what to read first
 AGENTS.md           what an AI assistant must read before editing anything
 outputs/panel.csv   the panel itself, one row per commodity, state and month pair
 outputs/monthly.csv every observed month of the eligible series, so gaps stay visible
-outputs/baseline_scores.csv   scored cells with both reference scores
+outputs/baseline_scores.csv   calibration and scored cells with both reference scores
 outputs/baseline_folds.csv    the frozen thresholds and the reference results per fold
+outputs/fold_table.csv        calibration/scored metrics for all four forecast rules
+outputs/alerts.csv            latest scored month, with outcomes withheld from the app
 ```
 
 ## Reproduce
 
 ```
 pip install -r requirements.txt
-python src/panel.py
-python src/fx.py        # only needed to refresh the frozen rate series
-python src/baseline.py
+python src/run_all.py --skip-resources
 ```
+
+The networked `src/fx.py` command is only for deliberately refreshing the frozen rate
+snapshot. The normal pipeline uses the committed data and needs no network access.
 
 `src/panel.py` ends by printing the three scored windows and their counts, which must
 match Table 1 of the proposal, plus the balanced market check. Read
@@ -137,8 +148,10 @@ fixed here rather than in the two page proposal because they are implementation 
   where that price exists, which is 270, 448 and 488 of the 472, 472 and 508 scored cells.
 - **SARIMA**: one model per series, orders selected by information criterion (AIC) over a
   small grid of non-seasonal orders up to (2,1,2) and one seasonal difference of order 12.
-  Selection uses only data up to each origin. Series with fewer than 24 observations in
-  the fitting window are skipped and reported.
+  Each origin uses at most the previous 60 calendar months; selection uses only data through
+  that origin. Gaps stay missing. Series with fewer than 24 observed values in the window are
+  skipped and reported. Candidate fits reuse the prior month's parameter estimates only as
+  optimizer starting values, then refit and compare AIC again.
 - **LightGBM**: pooled model predicting the log one month change; features are price lags
   of one to three months, trailing three and twelve month averages, calendar month,
   state, commodity and the exchange rate when that variant is switched on. Settings are
@@ -154,8 +167,9 @@ fixed here rather than in the two page proposal because they are implementation 
   report also gives common cell results and states coverage next to every score.
 - **Exchange rate**: monthly average of the CBN official daily naira per dollar rate, taking
   the central rate column of the daily table, averaged over the days present in each month
-  after removing duplicate dates. The rate for a scored month uses only values dated in that
-  month or earlier. The series is one continuous column spanning 2001 to today, but the rate
+  after removing duplicate dates. A forecast for outcome month t is issued at t-1, so its
+  feature uses the monthly average through t-1 and does not use the outcome month's rate.
+  The series is one continuous column spanning 2001 to the snapshot, but the rate
   it records changes regime in June 2023, from the pegged official rate to a market rate, so
   the ablation measures whether adding the official rate helps and not whether a free
   floating rate helps. All 52 months the folds use are present.

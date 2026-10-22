@@ -9,7 +9,7 @@ Persistence repeats last month's price, so its predicted change is exactly zero.
 constant cannot be thresholded against a false alarm cap, so persistence is never an
 alerting rule here: it is the reference the average miss is measured against.
 
-Output: outputs/baseline_scores.csv   one row per scored cell, with both reference scores
+Output: outputs/baseline_scores.csv   calibration and scored cells, with both reference scores
         console report               per fold: coverage, threshold, recall and the miss
 
 Run:  python src/baseline.py     (after python src/panel.py)
@@ -99,6 +99,33 @@ def run_fold(cal, test, fold_label):
 def main():
     panel = add_scores(pd.read_csv(PANEL))
 
+    # The common harness needs score rows for calibration months as well as scored
+    # months. Keep the observed-month score file broad enough for every fold while the
+    # published fold table below still evaluates only each fold's scored window.
+    months = set()
+    for fold in folds_mod.FOLDS:
+        for part in ("calibration", "scored"):
+            start, end = fold[part]
+            months.update(range(folds_mod.mi_of(start), folds_mod.mi_of(end) + 1))
+    harness = panel[panel["mi"].isin(months)].copy()
+    # Keep the historical fold field in the reference CSV. For months that are both
+    # a prior fold's scored window and the next fold's calibration window, use the
+    # scored-window fold label; the first calibration window belongs to fold 1.
+    fold_by_month = {}
+    for fold in folds_mod.FOLDS:
+        start, end = fold["scored"]
+        for mi in range(folds_mod.mi_of(start), folds_mod.mi_of(end) + 1):
+            fold_by_month[mi] = fold["fold"]
+    for fold in folds_mod.FOLDS:
+        start, end = fold["calibration"]
+        for mi in range(folds_mod.mi_of(start), folds_mod.mi_of(end) + 1):
+            fold_by_month.setdefault(mi, fold["fold"])
+    harness["fold"] = harness["mi"].map(fold_by_month)
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    harness[["series", "commodity", "admin1", "mi", "fold", "price_kg", "prev_price_kg",
+             "actual_change", "rise", "naive_score", "persistence_score"]].to_csv(
+                 OUT, index=False, lineterminator="\n")
+
     rows, kept = [], []
     for fold in folds_mod.FOLDS:
         cal = folds_mod.fold_slice(panel, fold, "calibration")
@@ -108,8 +135,6 @@ def main():
         rows.append(run_fold(cal, test, fold["fold"]))
 
     scored = pd.concat(kept, ignore_index=True)
-    scored[["series", "commodity", "admin1", "mi", "fold", "price_kg", "prev_price_kg",
-            "actual_change", "rise", "naive_score", "persistence_score"]].to_csv(OUT, index=False)
     # The fold table is written as well, because the frozen threshold lives here and the
     # demo app must not recompute it: a threshold chosen off the scored cells would be the
     # exact mistake the calibration rule exists to prevent.
@@ -122,7 +147,8 @@ def main():
         print("%-5s %5d  %5d  %7d  %9s  %6.3f  %5.3f  %6d  %9.4f  %11.4f"
               % (r["fold"], r["cells"], r["rises"], r["covered"], thr,
                  r["recall"], r["fpr"], r["alerts"], r["mae_naive"], r["mae_persistence"]))
-    print("\nwrote %s (%d scored cells)" % (os.path.relpath(OUT, ROOT), len(scored)))
+    print("\nwrote %s (%d calibration/scored-window cells)" %
+          (os.path.relpath(OUT, ROOT), len(harness)))
     print("wrote %s (frozen thresholds and the reference results)" % os.path.relpath(fold_out, ROOT))
     print("The seasonal rule cannot cover every cell, so it is scored on the cells where a "
           "year-earlier price exists. Report any model beside it on those same cells.")

@@ -7,9 +7,10 @@
 - **#7 Exchange rate feature builder**, week 10, because the week 12 ablation in #4 cannot
   start until the rate exists as a model ready column.
 
-Both starters exist and run: `src/run_folds.py` does the loading, validation, label join and
-fold slicing, then stops at `score_fold`, and `src/features_fx.py` prints the rate coverage
-and stops at `attach_rate`. Run them first to see exactly what is missing.
+Both implementations are available: `src/run_folds.py` validates and scores each rule,
+and `src/features_fx.py` joins the rate available at each forecast origin. A score file must
+include both calibration and scored months so the threshold is calibrated without using
+scored outcomes.
 
 ## Read in this order
 
@@ -41,8 +42,8 @@ file carries more than one score; a model file will simply have `score`.
 
 `src/features_fx.py`:
 
-- Read `data/nigeria/cbn_nfem_usd_monthly.csv`, join by month, and use only values dated in
-  that month or earlier.
+- Read `data/nigeria/cbn_nfem_usd_monthly.csv`, join by forecast origin. A score for target
+  month t is issued at t-1, so the rate feature uses the monthly average through t-1.
 - Write `outputs/panel_fx.csv` with the rate column added.
 - Assert that every month in all three scored windows has a rate, and print the coverage
   range. A missing rate must fail the script, not become a zero.

@@ -17,7 +17,11 @@ Exchange by WFP on behalf of FEWS NET and the FAO food price monitoring service.
 |---|---|---|
 | `wfp_food_prices_nga.csv` | 88,391 | Market prices, January 2002 to October 2026, 68 markets, 43 commodities, 14 states, naira with a USD column |
 | `wfp_markets_nga.csv` | market lookup | Market identifiers with coordinates and administrative units |
-| `SHA256SUMS` | | Checksums of both files as retrieved |
+| `SHA256SUMS` | | Checksums of the frozen files committed here |
+
+`SHA256SUMS` is a local snapshot-integrity manifest, not a checksum published by WFP or
+the CBN. `scripts/check_data.py` verifies that the committed data bytes have not changed
+since this manifest was recorded, then checks the price file's expected profile.
 
 The prices file is the frozen snapshot used by the proposal. It must not be replaced
 in place. If WFP publishes a newer extract, download it to a dated filename instead,

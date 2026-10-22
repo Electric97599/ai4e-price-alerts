@@ -9,9 +9,9 @@ Both run on the results the modelling tasks produce, so start by building the co
 the reference output in `outputs/baseline_scores.csv`. When the real model score files
 appear, the same scripts run unchanged.
 
-Both starters exist and run: `src/report_tables.py` reads the fold table and stops at
-`penalty_table`, and `src/resources.py` prints the machine and library versions and stops at
-the peak memory measurement. Run them first to see exactly what is missing.
+Both implementations are available. `src/report_tables.py` derives penalties and subgroups
+from the saved model outputs; `src/resources.py` reruns each learned model once per fold and
+samples process working-set memory. `python src/run_all.py` runs both outputs after scoring.
 
 ## Read in this order
 
