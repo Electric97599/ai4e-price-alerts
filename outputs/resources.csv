@@ -1,0 +1,10 @@
+model,fold,wall_seconds,peak_rss_mb,command
+sarima,1,220.76744140000665,159.16015625,python src/sarima.py --fold 1 --output outputs\_resource_runs\sarima_fold1.csv
+sarima,2,302.2715241999831,157.7109375,python src/sarima.py --fold 2 --output outputs\_resource_runs\sarima_fold2.csv
+sarima,3,281.3333973000117,156.56640625,python src/sarima.py --fold 3 --output outputs\_resource_runs\sarima_fold3.csv
+lightgbm,1,13.221160699991742,171.203125,python src/lightgbm_pipeline.py --fold 1 --output outputs\_resource_runs\lightgbm_fold1.csv
+lightgbm,2,13.668271500006083,172.2421875,python src/lightgbm_pipeline.py --fold 2 --output outputs\_resource_runs\lightgbm_fold2.csv
+lightgbm,3,15.328647199989064,172.21875,python src/lightgbm_pipeline.py --fold 3 --output outputs\_resource_runs\lightgbm_fold3.csv
+lightgbm_fx,1,21.34055530000478,172.16015625,python src/lightgbm_pipeline.py --fold 1 --output outputs\_resource_runs\lightgbm_fx_fold1.csv --with-fx
+lightgbm_fx,2,12.94381140000769,171.81640625,python src/lightgbm_pipeline.py --fold 2 --output outputs\_resource_runs\lightgbm_fx_fold2.csv --with-fx
+lightgbm_fx,3,12.90938389999792,173.1171875,python src/lightgbm_pipeline.py --fold 3 --output outputs\_resource_runs\lightgbm_fx_fold3.csv --with-fx

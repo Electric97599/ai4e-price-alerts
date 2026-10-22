@@ -25,17 +25,45 @@ DATA = os.path.join(ROOT, "data", "nigeria")
 EXPECTED_ROWS = 88391
 EXPECTED_MARKETS = 68
 EXPECTED_COMMODITIES = 43
+EXPECTED_FIRST_MONTH = "2002-01"
+EXPECTED_LAST_MONTH = "2026-10"
 
 
 def verify_checksums(folder=DATA):
     """Check every file listed in SHA256SUMS, from inside the folder it lives in.
 
-    TODO(#2): implement. Read SHA256SUMS, hash each listed file in `folder`, and collect
-    the names that do not match or are missing. Return the list of problems, empty when the
-    snapshot is intact. Do not shell out to sha256sum: it does not exist on every machine
-    the group uses, and hashlib does.
+    Read SHA256SUMS, hash each listed file in `folder`, and collect names that do not
+    match or are missing. Hashing uses hashlib so this works on Windows and Linux.
     """
-    raise NotImplementedError("issue #2: verify the checksums in place")
+    manifest = os.path.join(folder, "SHA256SUMS")
+    if not os.path.isfile(manifest):
+        return ["SHA256SUMS (missing)"]
+    problems = []
+    with open(manifest, encoding="utf-8") as fh:
+        for line_number, line in enumerate(fh, start=1):
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split(None, 1)
+            if len(parts) != 2 or len(parts[0]) != 64:
+                problems.append("SHA256SUMS line %d (malformed)" % line_number)
+                continue
+            expected, name = parts
+            name = name.lstrip("* ")
+            path = os.path.abspath(os.path.join(folder, name))
+            if os.path.commonpath([os.path.abspath(folder), path]) != os.path.abspath(folder):
+                problems.append("%s (path escapes data folder)" % name)
+                continue
+            if not os.path.isfile(path):
+                problems.append("%s (missing)" % name)
+                continue
+            digest = hashlib.sha256()
+            with open(path, "rb") as source:
+                for chunk in iter(lambda: source.read(1 << 20), b""):
+                    digest.update(chunk)
+            if digest.hexdigest().lower() != expected.lower():
+                problems.append("%s (checksum mismatch)" % name)
+    return problems
 
 
 def profile_prices(path=None):
@@ -65,12 +93,10 @@ def main():
             EXPECTED_ROWS, EXPECTED_MARKETS, EXPECTED_COMMODITIES):
         print("WARNING: the file no longer matches the profile the report quotes")
         sys.exit(1)
+    if (profile["first"][:7], profile["last"][:7]) != (EXPECTED_FIRST_MONTH, EXPECTED_LAST_MONTH):
+        print("WARNING: the file date range no longer matches the frozen snapshot profile")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except NotImplementedError as todo:
-        print("Not built yet:", todo)
-        print("See the docstring at the top of this file, and your sheet in docs/on-ramp/.")
-        raise SystemExit(2)
+    main()

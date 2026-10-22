@@ -21,15 +21,15 @@ You also own the repository itself, so you merge the pull requests.
 7. `README.md`, section "Modelling rules the proposal leaves to the repository", for the
    SARIMA order rule, the LightGBM feature list and the gap rule you agreed to.
 
-Your three model files do not exist yet, which is your work; write each one to end with
-`contracts.write_scores(frame, "outputs/<model>_scores.csv")` and Bizima's harness will pick
-it up without changes.
+The model runners are `src/sarima.py` and `src/lightgbm_pipeline.py`; the monthly alert
+writer is `src/score_alerts.py`. Each writes the shared `series, mi, score` format, and
+`src/run_all.py` connects them to the calibration harness, report tables and app.
 
 ## What each task produces
 
-- **#3**: `outputs/sarima_scores.csv`, one model per series, orders by information
-  criterion at each origin, refitted at every monthly origin, series with too little
-  history skipped and counted.
+- **#3**: `outputs/sarima_scores.csv`, one model per series, orders chosen by AIC at each
+  origin, using a rolling window of at most 60 months. Gaps remain missing; series with
+  fewer than 24 observed values in the window are skipped and counted.
 - **#4**: `outputs/lightgbm_scores.csv`, then `outputs/lightgbm_fx_scores.csv` for the
   ablation. Same columns, one column of difference.
 - **#5**: `outputs/alerts.csv` for the newest scored month, written by a scheduled script

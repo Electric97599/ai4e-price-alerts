@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  scripts-run:
+  end-to-end:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,32 +14,37 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - name: Install
+      - name: Install pinned dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Metric self tests
-        run: python src/metrics.py
-      - name: Panel counts match the proposal
-        run: |
-          python src/panel.py | tee panel_out.txt
-          grep -q "1452" panel_out.txt
-      - name: Fold table adds up
-        run: |
-          python src/folds.py | tee folds_out.txt
-          grep -q "Total scored cells 1452, rises 355" folds_out.txt
-      - name: Reference rules run
-        run: python src/baseline.py
-      - name: Reference table matches the documented counts
+      - name: Rebuild and run the complete project pipeline
+        run: python src/run_all.py --skip-resources
+      - name: Verify model, fold and alert contracts
         run: |
           python - <<'PY'
           import pandas as pd
-          table = pd.read_csv("outputs/baseline_folds.csv")
-          assert list(table["cells"]) == [472, 472, 508], table["cells"].tolist()
-          assert list(table["covered"]) == [270, 448, 488], table["covered"].tolist()
-          assert int(table["rises"].sum()) == 355, table["rises"].sum()
-          print("reference table matches the documented counts")
+          folds = pd.read_csv("outputs/fold_table.csv")
+          assert len(folds) == 12, folds.shape
+          assert set(folds.model) == {"seasonal", "sarima", "lightgbm", "lightgbm_fx"}
+          assert list(folds[folds.model == "seasonal"].cells) == [472, 472, 508]
+          assert list(folds[folds.model == "seasonal"].coverage) == [270, 448, 488]
+          assert int(folds[folds.model == "seasonal"].rises.sum()) == 355
+          alerts = pd.read_csv("outputs/alerts.csv")
+          assert set(alerts.model) == {"seasonal", "sarima", "lightgbm", "lightgbm_fx"}
+          assert not {"rise", "actual_change", "price_kg"}.intersection(alerts.columns)
+          for name in ("sarima_scores.csv", "lightgbm_scores.csv", "lightgbm_fx_scores.csv"):
+              frame = pd.read_csv("outputs/" + name)
+              assert list(frame.columns) == ["series", "mi", "score"]
+              assert frame.score.notna().all()
+              assert not frame.duplicated(["series", "mi"]).any()
+          print("end-to-end outputs satisfy the frozen score, fold and alert contracts")
           PY
       - name: Demo app starts without an exception
         run: |
-          python -c "from streamlit.testing.v1 import AppTest; at = AppTest.from_file('app.py', default_timeout=120).run(); assert not at.exception, at.exception"
+          python - <<'PY'
+          from streamlit.testing.v1 import AppTest
+          at = AppTest.from_file("app.py", default_timeout=120).run()
+          assert not at.exception, at.exception
+          print("demo app started")
+          PY
