@@ -144,11 +144,13 @@ Three different links get mixed up on this project, so they are named here once:
 The frozen file matches today's feed on all 6,081 dates, with the first row identical
 (2001-12-10, buying 111.85, central 112.35, selling 112.85). Three dates disagree with the
 live feed by a few naira, and the reason is that those dates appear twice in the feed with
-different quotes (2023-12-12, 2024-02-22, 2024-07-02); the snapshot keeps the first copy, so
-the difference is which duplicate was retained, not a correction.
+different quotes (2023-12-12, 2024-02-22, 2024-07-02); the snapshot keeps the later
+publication, so the difference is which duplicate was retained, not a correction.
 
 - `cbn_nfem_usd_daily.csv`: CBN official daily US dollar rates, one row per date after
-  dropping duplicate dates, columns `date`, `ngn_per_usd` (the central rate, midway between
+  dropping duplicate dates. Where a date appears twice in the feed, the later publication is
+  kept, that is the higher id, which is why the frozen file reads 848.78 for 2023-12-12
+  against 853.277 in the earlier copy. Columns `date`, `ngn_per_usd` (the central rate, midway between
   the buying and selling quotes except where noted below), `buyingrate`, `sellingrate`.
   6,081 rows from 2001-12-10 to 2026-10-19. The series is the pegged official rate before
   June 2023 and the NFEM market rate from then on, so the name NFEM is exact only for the
@@ -169,11 +171,11 @@ the daily table is used and averaged here.
 How the rate becomes a feature, in order:
 
 1. **Source series.** The Central Bank of Nigeria daily US dollar series, the central rate
-   column, stored in `cbn_nfem_usd_daily.csv`.
-2. **Duplicate dates removed.** Where a date appears twice in the feed, the first copy is kept.
-3. **Monthly average.** The remaining daily values are averaged by calendar month into
+   column, stored in `cbn_nfem_usd_daily.csv`, one row per date (the duplicate date rule is
+   stated once, in the file description above).
+2. **Monthly average.** The daily values are averaged by calendar month into
    `cbn_nfem_usd_monthly.csv`, with a `days` count showing how many dates fed each month.
-4. **No look ahead.** A scored cell for outcome month t is forecast at t-1, so it uses only
+3. **No look ahead.** A scored cell for outcome month t is forecast at t-1, so it uses only
    values dated in month t-1 or earlier. `src/features_fx.py` joins the monthly average of
    t-1 to the row for t, and stops with an error if any forecast origin in a fold has no rate.
 
