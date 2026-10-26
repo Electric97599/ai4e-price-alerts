@@ -166,6 +166,22 @@ the difference is which duplicate was retained, not a correction.
 The bank's monthly average table (`/rates/exrate.html`) stops in April 2021, which is why
 the daily table is used and averaged here.
 
+How the rate becomes a feature, in order:
+
+1. **Source series.** The Central Bank of Nigeria daily US dollar series, the central rate
+   column, stored in `cbn_nfem_usd_daily.csv`.
+2. **Duplicate dates removed.** Where a date appears twice in the feed, the first copy is kept.
+3. **Monthly average.** The remaining daily values are averaged by calendar month into
+   `cbn_nfem_usd_monthly.csv`, with a `days` count showing how many dates fed each month.
+4. **No look ahead.** A scored cell for outcome month t is forecast at t-1, so it uses only
+   values dated in month t-1 or earlier. `src/features_fx.py` joins the monthly average of
+   t-1 to the row for t, and stops with an error if any forecast origin in a fold has no rate.
+
+Run `python scripts/check_data.py` from a fresh clone to confirm that the committed bytes of
+every file listed in `SHA256SUMS` are unchanged. The script runs the check inside this folder,
+prints the row count, date range, and market and commodity counts of the price file, and exits
+non zero on any mismatch.
+
 ## Price flags
 
 Every `priceflag` value is kept: `actual`, `aggregate`, and the combined label. Among the
