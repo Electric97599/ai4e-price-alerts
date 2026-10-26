@@ -141,20 +141,23 @@ Three different links get mixed up on this project, so they are named here once:
   restates the start dates in plain words. It is never downloaded from and does not appear in
   the paper; it is linked in the repository README only as something a reader can check.
 
-The frozen file matches today's feed on all 6,081 dates, with the first row identical
-(2001-12-10, buying 111.85, central 112.35, selling 112.85). Three dates disagree with the
-live feed by a few naira, and the reason is that those dates appear twice in the feed with
-different quotes (2023-12-12, 2024-02-22, 2024-07-02); the snapshot keeps the later
-publication, so the difference is which duplicate was retained, not a correction.
+The frozen file holds 6,081 rows, one for each unique date from 2001-12-10 to 2026-10-19,
+and its first row is identical (2001-12-10, buying 111.85, central 112.35, selling 112.85).
+Reduced to one row per date the same way, the feed as read on 26 October 2026 still agrees
+with the frozen file on all 6,081 of those dates; the feed itself has since grown to 6,087
+dates. Six dates appear twice in the feed and four of those pairs carry different quotes:
+2022-03-29 by 0.03 naira, 2023-12-12 by 4.50, 2024-02-22 by 48.78 and 2024-07-02 by 3.32.
+The other two duplicated dates, 2013-06-28 and 2020-11-18, carry identical quotes in both
+copies. Which copy each file keeps is stated with the file below.
 
 - `cbn_nfem_usd_daily.csv`: CBN official daily US dollar rates, one row per date after
   dropping duplicate dates. Where a date appears twice in the feed, the later publication is
   kept, that is the higher id, which is why the frozen file reads 848.78 for 2023-12-12
-  against 853.277 in the earlier copy. Columns `date`, `ngn_per_usd` (the central rate, midway between
-  the buying and selling quotes except where noted below), `buyingrate`, `sellingrate`.
-  6,081 rows from 2001-12-10 to 2026-10-19. The series is the pegged official rate before
-  June 2023 and the NFEM market rate from then on, so the name NFEM is exact only for the
-  later part; one continuous series is kept because the model needs one column.
+  against 853.277 in the earlier copy. Columns `date`, `ngn_per_usd` (the central rate,
+  midway between the buying and selling quotes except where noted below), `buyingrate`,
+  `sellingrate`. 6,081 rows from 2001-12-10 to 2026-10-19. The series is the pegged official
+  rate before June 2023 and the NFEM market rate from then on, so the name NFEM is exact
+  only for the later part; one continuous series is kept because the model needs one column.
 - `cbn_nfem_usd_monthly.csv`: monthly mean of `ngn_per_usd` with a `days` count, 299 rows
   from 2001-12 to 2026-10. All 36 months in the three scored windows are present.
 - Regenerate with `python src/fx.py`. Checksums for both files are in `SHA256SUMS`.
