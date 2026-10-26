@@ -143,12 +143,13 @@ Three different links get mixed up on this project, so they are named here once:
 
 The frozen file holds 6,081 rows, one for each unique date from 2001-12-10 to 2026-10-19,
 and its first row is identical (2001-12-10, buying 111.85, central 112.35, selling 112.85).
-Reduced to one row per date the same way, the feed as read on 26 October 2026 still agrees
-with the frozen file on all 6,081 of those dates; the feed itself has since grown to 6,087
-dates. Six dates appear twice in the feed and four of those pairs carry different quotes:
-2022-03-29 by 0.03 naira, 2023-12-12 by 4.50, 2024-02-22 by 48.78 and 2024-07-02 by 3.32.
-The other two duplicated dates, 2013-06-28 and 2020-11-18, carry identical quotes in both
-copies. Which copy each file keeps is stated with the file below.
+The CBN feed retrieved on 26 October 2026 contains 6,087 records covering those same 6,081
+unique dates. After reducing it to one row per date with the duplicate rule described below,
+its daily values match the frozen file on all 6,081 dates. Six dates appear twice in the feed,
+and four of those pairs carry different quotes: 2022-03-29 by 0.03 naira, 2023-12-12 by
+4.50, 2024-02-22 by 48.78 and 2024-07-02 by 3.32. The other two duplicated dates,
+2013-06-28 and 2020-11-18, carry identical quotes in both copies. The daily file's duplicate
+retention rule is stated in its description below.
 
 - `cbn_nfem_usd_daily.csv`: CBN official daily US dollar rates, one row per date after
   dropping duplicate dates. Where a date appears twice in the feed, the later publication is
