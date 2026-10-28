@@ -211,6 +211,15 @@ def main():
     print("series %d | cells %d | rises %d | %.1f percent"
           % (len(keep_b), cells_b, rises_b, 100 * rises_b / cells_b))
 
+    # Both counts in one table, so the report can quote the check beside the full panel.
+    print()
+    print("Full panel against balanced market check (scored windows)")
+    print("%-16s %15s %6s %6s %10s" % ("", "eligible series", "cells", "rises", "rise rate"))
+    print("%-16s %15d %6d %6d %9.1f%%"
+          % ("full panel", len(keep), total_cells, total_rises, 100 * total_rises / total_cells))
+    print("%-16s %15d %6d %6d %9.1f%%"
+          % ("balanced check", len(keep_b), cells_b, rises_b, 100 * rises_b / cells_b))
+
     os.makedirs(OUT_DIR, exist_ok=True)
     cols = ["commodity", "admin1", "mi", "price_kg", "prev_price_kg", "change", "rise", "markets", "quotes"]
     panel[panel["key"].isin(keep)][cols].to_csv(OUT, index=False)

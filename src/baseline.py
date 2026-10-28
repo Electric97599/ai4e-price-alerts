@@ -152,6 +152,8 @@ def main():
     print("wrote %s (frozen thresholds and the reference results)" % os.path.relpath(fold_out, ROOT))
     print("The seasonal rule cannot cover every cell, so it is scored on the cells where a "
           "year-earlier price exists. Report any model beside it on those same cells.")
+    print("The balanced market check (full panel beside the balanced markets) is printed "
+          "at the end of python src/panel.py.")
 
 
 if __name__ == "__main__":
