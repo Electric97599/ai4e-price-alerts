@@ -138,6 +138,67 @@ def eligible_keys(monthly, require_consecutive=False):
     return keep
 
 
+def scored_totals(panel, keep):
+    """Cells, rises and contributing series inside the three scored windows.
+
+    A contributing series is an eligible series with at least one scored cell. Eligible
+    series can exceed it, because a series can pass the coverage rule and still have no
+    consecutive month pair inside a scored window.
+    """
+    cells = rises = 0
+    contributing = set()
+    for _, _, _, test_a, test_b in FOLDS:
+        scored = panel[(panel["mi"] >= mi_of(test_a)) & (panel["mi"] <= mi_of(test_b))]
+        scored = scored[scored["key"].isin(keep)]
+        cells += len(scored)
+        rises += int(scored["rise"].sum())
+        contributing.update(scored["key"])
+    return cells, rises, len(contributing)
+
+
+def comparison_table(raw):
+    """The full panel beside the balanced market check, computed from the raw price file.
+
+    The balanced check keeps markets that quote at least once in every scored window.
+    Both rows are built with the same functions, so src/baseline.py and this script
+    print the same numbers. Nothing here is hardcoded.
+    """
+    retail, monthly = build_monthly(raw)
+    panel = build_panel(monthly)
+    keep = eligible_keys(monthly)
+
+    windows = [(mi_of(test_a), mi_of(test_b)) for _, _, _, test_a, test_b in FOLDS]
+    near = retail[retail["admin1"].isin(STATES)]
+    quotes = near.assign(ym=month_index(near["date"]))
+    active = [m for m in sorted(quotes["market"].unique())
+              if all(((quotes["market"] == m) & (quotes["ym"] >= a) & (quotes["ym"] <= b)).any() for a, b in windows)]
+    _, monthly_b = build_monthly(raw[raw["market"].isin(active)])
+    panel_b = build_panel(monthly_b)
+    keep_b = eligible_keys(monthly_b)
+
+    rows = []
+    for label, n_markets, pan, keys in (("full panel", quotes["market"].nunique(), panel, keep),
+                                        ("balanced check", len(active), panel_b, keep_b)):
+        cells, rises, contributing = scored_totals(pan, keys)
+        rows.append({"label": label, "markets": n_markets, "eligible": len(keys),
+                     "contributing": contributing, "cells": cells, "rises": rises})
+    return rows
+
+
+def print_comparison(rows):
+    """Print the comparison table; rise rate is rises over scored cells."""
+    print("Full panel against balanced market check (scored windows)")
+    print("%-16s %8s %9s %12s %6s %6s %10s"
+          % ("", "markets", "eligible", "contributing", "cells", "rises", "rise rate"))
+    for r in rows:
+        print("%-16s %8d %9d %12d %6d %6d %9.1f%%"
+              % (r["label"], r["markets"], r["eligible"], r["contributing"],
+                 r["cells"], r["rises"], 100 * r["rises"] / r["cells"]))
+    print("markets: in the three states, then those active in all three scored windows")
+    print("eligible: series passing the coverage rule | contributing: eligible series with "
+          "at least one scored cell")
+
+
 def main():
     if not os.path.exists(DATA):
         sys.exit("missing data file: %s" % DATA)
@@ -188,37 +249,10 @@ def main():
           ("all", "", "", "", total_cells, total_rises))
     print("rise rate over scored cells: %.2f percent" % (100 * total_rises / total_cells))
 
-    # Balanced market check: markets that quote in every scored window.
-    windows = [(mi_of(test_a), mi_of(test_b)) for _, _, _, test_a, test_b in FOLDS]
-    near = retail[retail["admin1"].isin(STATES)]
-    quotes = near.assign(ym=month_index(near["date"]))
-    active = [m for m in sorted(quotes["market"].unique())
-              if all(((quotes["market"] == m) & (quotes["ym"] >= a) & (quotes["ym"] <= b)).any() for a, b in windows)]
-    balanced = raw[raw["market"].isin(active)]
-    _, monthly_b = build_monthly(balanced)
-    panel_b = build_panel(monthly_b)
-    keep_b = eligible_keys(monthly_b)
-    cells_b = rises_b = 0
-    for _, _, _, test_a, test_b in FOLDS:
-        sc = panel_b[(panel_b["mi"] >= mi_of(test_a)) & (panel_b["mi"] <= mi_of(test_b))]
-        sc = sc[sc["key"].isin(keep_b)]
-        cells_b += len(sc)
-        rises_b += int(sc["rise"].sum())
+    # Balanced market check beside the full panel, from the one calculation that
+    # src/baseline.py also calls.
     print()
-    print("Balanced market check")
-    print("markets active in all three scored windows: %d of %d in the three states"
-          % (len(active), quotes["market"].nunique()))
-    print("series %d | cells %d | rises %d | %.1f percent"
-          % (len(keep_b), cells_b, rises_b, 100 * rises_b / cells_b))
-
-    # Both counts in one table, so the report can quote the check beside the full panel.
-    print()
-    print("Full panel against balanced market check (scored windows)")
-    print("%-16s %15s %6s %6s %10s" % ("", "eligible series", "cells", "rises", "rise rate"))
-    print("%-16s %15d %6d %6d %9.1f%%"
-          % ("full panel", len(keep), total_cells, total_rises, 100 * total_rises / total_cells))
-    print("%-16s %15d %6d %6d %9.1f%%"
-          % ("balanced check", len(keep_b), cells_b, rises_b, 100 * rises_b / cells_b))
+    print_comparison(comparison_table(raw))
 
     os.makedirs(OUT_DIR, exist_ok=True)
     cols = ["commodity", "admin1", "mi", "price_kg", "prev_price_kg", "change", "rise", "markets", "quotes"]
