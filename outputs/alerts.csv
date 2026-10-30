@@ -1,169 +1,169 @@
 model,fold,series,commodity,admin1,mi,score,threshold,alert
-lightgbm,3,Rice (imported) | Borno,Rice (imported),Borno,24318,0.1337291991707209,0.0567876914682506,True
-lightgbm,3,Milk (powder) | Borno,Milk (powder),Borno,24318,0.0376215748330673,0.0567876914682506,False
-lightgbm,3,Sugar | Borno,Sugar,Borno,24318,0.0266176467352346,0.0567876914682506,False
-lightgbm,3,Meat (beef) | Borno,Meat (beef),Borno,24318,0.0221890250332303,0.0567876914682506,False
-lightgbm,3,Meat (beef) | Yobe,Meat (beef),Yobe,24318,0.0221890250332303,0.0567876914682506,False
-lightgbm,3,Meat (goat) | Borno,Meat (goat),Borno,24318,0.020729458674989,0.0567876914682506,False
-lightgbm,3,Sorghum | Borno,Sorghum,Borno,24318,0.0205393565796808,0.0567876914682506,False
-lightgbm,3,Millet | Yobe,Millet,Yobe,24318,0.0198733214712648,0.0567876914682506,False
-lightgbm,3,Millet | Borno,Millet,Borno,24318,0.0186821108160444,0.0567876914682506,False
-lightgbm,3,Sorghum | Yobe,Sorghum,Yobe,24318,0.0171777134606689,0.0567876914682506,False
-lightgbm,3,Tomatoes | Yobe,Tomatoes,Yobe,24318,0.0160728797303882,0.0567876914682506,False
-lightgbm,3,Beans (white) | Borno,Beans (white),Borno,24318,0.0160115994973307,0.0567876914682506,False
-lightgbm,3,Rice (local) | Borno,Rice (local),Borno,24318,0.0140131783583421,0.0567876914682506,False
-lightgbm,3,Watermelons | Yobe,Watermelons,Yobe,24318,0.0132215995782937,0.0567876914682506,False
-lightgbm,3,Rice (local) | Yobe,Rice (local),Yobe,24318,0.012442151989498,0.0567876914682506,False
-lightgbm,3,Groundnuts | Borno,Groundnuts,Borno,24318,0.0118896164579421,0.0567876914682506,False
-lightgbm,3,Groundnuts | Yobe,Groundnuts,Yobe,24318,0.011234998400016,0.0567876914682506,False
-lightgbm,3,Tomatoes | Borno,Tomatoes,Borno,24318,0.0103009676212937,0.0567876914682506,False
-lightgbm,3,Maize flour | Yobe,Maize flour,Yobe,24318,0.0093551671878397,0.0567876914682506,False
-lightgbm,3,Beans (red) | Borno,Beans (red),Borno,24318,0.0074263340350884,0.0567876914682506,False
-lightgbm,3,Cowpeas | Yobe,Cowpeas,Yobe,24318,0.0066433508828293,0.0567876914682506,False
-lightgbm,3,Yam | Borno,Yam,Borno,24318,0.0058433295884982,0.0567876914682506,False
-lightgbm,3,Spinach | Yobe,Spinach,Yobe,24318,0.0058251362682378,0.0567876914682506,False
-lightgbm,3,Onions | Borno,Onions,Borno,24318,0.0051767951386552,0.0567876914682506,False
-lightgbm,3,Salt | Yobe,Salt,Yobe,24318,0.0046081673881762,0.0567876914682506,False
-lightgbm,3,Bananas | Yobe,Bananas,Yobe,24318,0.0045914068422849,0.0567876914682506,False
-lightgbm,3,Onions | Yobe,Onions,Yobe,24318,0.0043613578585438,0.0567876914682506,False
-lightgbm,3,Sugar | Yobe,Sugar,Yobe,24318,0.0037568906989371,0.0567876914682506,False
-lightgbm,3,Beans (red) | Yobe,Beans (red),Yobe,24318,0.0030169840096109,0.0567876914682506,False
-lightgbm,3,Rice (imported) | Yobe,Rice (imported),Yobe,24318,0.0016288697624307,0.0567876914682506,False
-lightgbm,3,Salt | Borno,Salt,Borno,24318,-5.1810987616388966e-05,0.0567876914682506,False
-lightgbm,3,Beans (white) | Yobe,Beans (white),Yobe,24318,-0.0027144910276711,0.0567876914682506,False
-lightgbm,3,Yam | Yobe,Yam,Yobe,24318,-0.0032758039681321,0.0567876914682506,False
-lightgbm,3,Milk (powder) | Yobe,Milk (powder),Yobe,24318,-0.0058103974946531,0.0567876914682506,False
-lightgbm,3,Oranges | Yobe,Oranges,Yobe,24318,-0.0105940839022457,0.0567876914682506,False
-lightgbm,3,Meat (goat) | Yobe,Meat (goat),Yobe,24318,-0.0149055211410298,0.0567876914682506,False
-lightgbm,3,Maize flour | Borno,Maize flour,Borno,24318,-0.0150364734282115,0.0567876914682506,False
-lightgbm,3,Oranges | Borno,Oranges,Borno,24318,-0.0159317976408704,0.0567876914682506,False
-lightgbm,3,Bananas | Borno,Bananas,Borno,24318,-0.0177956599717285,0.0567876914682506,False
-lightgbm,3,Watermelons | Borno,Watermelons,Borno,24318,-0.020459578879272,0.0567876914682506,False
-lightgbm,3,Fish | Borno,Fish,Borno,24318,-0.03603194894138,0.0567876914682506,False
-lightgbm,3,Fish | Yobe,Fish,Yobe,24318,-0.0846176342391788,0.0567876914682506,False
-lightgbm_fx,3,Rice (imported) | Borno,Rice (imported),Borno,24318,0.2112415466716444,0.068506308478798,True
-lightgbm_fx,3,Sorghum | Yobe,Sorghum,Yobe,24318,0.0729079757119049,0.068506308478798,True
-lightgbm_fx,3,Sorghum | Borno,Sorghum,Borno,24318,0.063345213887118,0.068506308478798,False
-lightgbm_fx,3,Millet | Yobe,Millet,Yobe,24318,0.0611894376198769,0.068506308478798,False
-lightgbm_fx,3,Tomatoes | Yobe,Tomatoes,Yobe,24318,0.0508335771261168,0.068506308478798,False
-lightgbm_fx,3,Millet | Borno,Millet,Borno,24318,0.0495746827865382,0.068506308478798,False
-lightgbm_fx,3,Milk (powder) | Borno,Milk (powder),Borno,24318,0.0459337699393677,0.068506308478798,False
-lightgbm_fx,3,Beans (white) | Borno,Beans (white),Borno,24318,0.0438913242629464,0.068506308478798,False
-lightgbm_fx,3,Groundnuts | Borno,Groundnuts,Borno,24318,0.0435948801352801,0.068506308478798,False
-lightgbm_fx,3,Groundnuts | Yobe,Groundnuts,Yobe,24318,0.0435948801352801,0.068506308478798,False
-lightgbm_fx,3,Beans (red) | Borno,Beans (red),Borno,24318,0.0435219320359113,0.068506308478798,False
-lightgbm_fx,3,Cowpeas | Yobe,Cowpeas,Yobe,24318,0.042445688229192,0.068506308478798,False
-lightgbm_fx,3,Watermelons | Yobe,Watermelons,Yobe,24318,0.0420576614378857,0.068506308478798,False
-lightgbm_fx,3,Onions | Borno,Onions,Borno,24318,0.0419460768672663,0.068506308478798,False
-lightgbm_fx,3,Maize flour | Yobe,Maize flour,Yobe,24318,0.041795688400675,0.068506308478798,False
-lightgbm_fx,3,Spinach | Yobe,Spinach,Yobe,24318,0.041634472900537,0.068506308478798,False
-lightgbm_fx,3,Rice (local) | Borno,Rice (local),Borno,24318,0.0399108727418109,0.068506308478798,False
-lightgbm_fx,3,Rice (local) | Yobe,Rice (local),Yobe,24318,0.0394970029839172,0.068506308478798,False
-lightgbm_fx,3,Yam | Borno,Yam,Borno,24318,0.0391128517047116,0.068506308478798,False
-lightgbm_fx,3,Meat (beef) | Borno,Meat (beef),Borno,24318,0.0363796887291608,0.068506308478798,False
-lightgbm_fx,3,Meat (beef) | Yobe,Meat (beef),Yobe,24318,0.0363796887291608,0.068506308478798,False
-lightgbm_fx,3,Beans (red) | Yobe,Beans (red),Yobe,24318,0.0360524878848623,0.068506308478798,False
-lightgbm_fx,3,Sugar | Borno,Sugar,Borno,24318,0.0357928623435122,0.068506308478798,False
-lightgbm_fx,3,Meat (goat) | Borno,Meat (goat),Borno,24318,0.0352493602603679,0.068506308478798,False
-lightgbm_fx,3,Onions | Yobe,Onions,Yobe,24318,0.0308849154306417,0.068506308478798,False
-lightgbm_fx,3,Sugar | Yobe,Sugar,Yobe,24318,0.0308777947003817,0.068506308478798,False
-lightgbm_fx,3,Tomatoes | Borno,Tomatoes,Borno,24318,0.0306614138251954,0.068506308478798,False
-lightgbm_fx,3,Salt | Yobe,Salt,Yobe,24318,0.0305942769421276,0.068506308478798,False
-lightgbm_fx,3,Salt | Borno,Salt,Borno,24318,0.0291550342613386,0.068506308478798,False
-lightgbm_fx,3,Beans (white) | Yobe,Beans (white),Yobe,24318,0.0278167389301598,0.068506308478798,False
-lightgbm_fx,3,Rice (imported) | Yobe,Rice (imported),Yobe,24318,0.0258429111461658,0.068506308478798,False
-lightgbm_fx,3,Fish | Borno,Fish,Borno,24318,0.0251400139430882,0.068506308478798,False
-lightgbm_fx,3,Oranges | Yobe,Oranges,Yobe,24318,0.0223817785708067,0.068506308478798,False
-lightgbm_fx,3,Yam | Yobe,Yam,Yobe,24318,0.020101416074238,0.068506308478798,False
-lightgbm_fx,3,Bananas | Yobe,Bananas,Yobe,24318,0.0177115401442137,0.068506308478798,False
-lightgbm_fx,3,Maize flour | Borno,Maize flour,Borno,24318,0.0151711298699166,0.068506308478798,False
-lightgbm_fx,3,Bananas | Borno,Bananas,Borno,24318,0.0023966847825392,0.068506308478798,False
-lightgbm_fx,3,Watermelons | Borno,Watermelons,Borno,24318,-0.0020910478717216,0.068506308478798,False
-lightgbm_fx,3,Meat (goat) | Yobe,Meat (goat),Yobe,24318,-0.0076654022585595,0.068506308478798,False
-lightgbm_fx,3,Milk (powder) | Yobe,Milk (powder),Yobe,24318,-0.0112061391191356,0.068506308478798,False
-lightgbm_fx,3,Oranges | Borno,Oranges,Borno,24318,-0.0252328578942917,0.068506308478798,False
-lightgbm_fx,3,Fish | Yobe,Fish,Yobe,24318,-0.0605745015366573,0.068506308478798,False
-sarima,3,Salt | Borno,Salt,Borno,24318,0.30897129366805,0.2989859465917849,True
-sarima,3,Onions | Borno,Onions,Borno,24318,0.2927018736704796,0.2989859465917849,False
-sarima,3,Beans (white) | Yobe,Beans (white),Yobe,24318,0.2134596967229359,0.2989859465917849,False
-sarima,3,Maize flour | Borno,Maize flour,Borno,24318,0.2049200080655863,0.2989859465917849,False
-sarima,3,Tomatoes | Borno,Tomatoes,Borno,24318,0.0694101090887883,0.2989859465917849,False
-sarima,3,Groundnuts | Borno,Groundnuts,Borno,24318,0.0634928571428573,0.2989859465917849,False
-sarima,3,Meat (beef) | Borno,Meat (beef),Borno,24318,0.0498527682221974,0.2989859465917849,False
-sarima,3,Spinach | Yobe,Spinach,Yobe,24318,0.0481919747017987,0.2989859465917849,False
-sarima,3,Fish | Borno,Fish,Borno,24318,0.0390797928525494,0.2989859465917849,False
-sarima,3,Groundnuts | Yobe,Groundnuts,Yobe,24318,0.0378521308274054,0.2989859465917849,False
-sarima,3,Yam | Yobe,Yam,Yobe,24318,0.0370370370370364,0.2989859465917849,False
-sarima,3,Meat (goat) | Borno,Meat (goat),Borno,24318,0.0348090961034056,0.2989859465917849,False
-sarima,3,Watermelons | Yobe,Watermelons,Yobe,24318,0.0305347444789098,0.2989859465917849,False
-sarima,3,Millet | Yobe,Millet,Yobe,24318,0.0244523494637988,0.2989859465917849,False
-sarima,3,Oranges | Yobe,Oranges,Yobe,24318,0.0027107432402559,0.2989859465917849,False
-sarima,3,Oranges | Borno,Oranges,Borno,24318,0.0002249857291962,0.2989859465917849,False
-sarima,3,Fish | Yobe,Fish,Yobe,24318,0.0,0.2989859465917849,False
-sarima,3,Milk (powder) | Yobe,Milk (powder),Yobe,24318,0.0,0.2989859465917849,False
-sarima,3,Onions | Yobe,Onions,Yobe,24318,0.0,0.2989859465917849,False
-sarima,3,Cowpeas | Yobe,Cowpeas,Yobe,24318,-0.0115553930250996,0.2989859465917849,False
-sarima,3,Rice (imported) | Yobe,Rice (imported),Yobe,24318,-0.0120146486818469,0.2989859465917849,False
-sarima,3,Rice (local) | Borno,Rice (local),Borno,24318,-0.0187311869323586,0.2989859465917849,False
-sarima,3,Maize flour | Yobe,Maize flour,Yobe,24318,-0.0199279279279281,0.2989859465917849,False
-sarima,3,Watermelons | Borno,Watermelons,Borno,24318,-0.0202236675178334,0.2989859465917849,False
-sarima,3,Millet | Borno,Millet,Borno,24318,-0.025759393118284,0.2989859465917849,False
-sarima,3,Sorghum | Borno,Sorghum,Borno,24318,-0.0300125191886368,0.2989859465917849,False
-sarima,3,Sorghum | Yobe,Sorghum,Yobe,24318,-0.031470723908258,0.2989859465917849,False
-sarima,3,Rice (local) | Yobe,Rice (local),Yobe,24318,-0.0510716218520412,0.2989859465917849,False
-sarima,3,Rice (imported) | Borno,Rice (imported),Borno,24318,-0.0527774999999994,0.2989859465917849,False
-sarima,3,Milk (powder) | Borno,Milk (powder),Borno,24318,-0.0586451563729722,0.2989859465917849,False
-sarima,3,Meat (goat) | Yobe,Meat (goat),Yobe,24318,-0.0717866077570264,0.2989859465917849,False
-sarima,3,Sugar | Yobe,Sugar,Yobe,24318,-0.0778610133675808,0.2989859465917849,False
-sarima,3,Beans (red) | Yobe,Beans (red),Yobe,24318,-0.0885029417486074,0.2989859465917849,False
-sarima,3,Tomatoes | Yobe,Tomatoes,Yobe,24318,-0.0933199999999996,0.2989859465917849,False
-sarima,3,Meat (beef) | Yobe,Meat (beef),Yobe,24318,-0.0939227237269023,0.2989859465917849,False
-sarima,3,Yam | Borno,Yam,Borno,24318,-0.0948600227002122,0.2989859465917849,False
-sarima,3,Beans (white) | Borno,Beans (white),Borno,24318,-0.1831980347602044,0.2989859465917849,False
-sarima,3,Bananas | Yobe,Bananas,Yobe,24318,-0.2087142369654628,0.2989859465917849,False
-sarima,3,Sugar | Borno,Sugar,Borno,24318,-0.2101991581852495,0.2989859465917849,False
-sarima,3,Salt | Yobe,Salt,Yobe,24318,-0.2857142857142851,0.2989859465917849,False
-sarima,3,Beans (red) | Borno,Beans (red),Borno,24318,-0.3085526213240806,0.2989859465917849,False
-sarima,3,Bananas | Borno,Bananas,Borno,24318,-0.339454212209368,0.2989859465917849,False
-seasonal,3,Sorghum | Yobe,Sorghum,Yobe,24318,0.5544846883258203,0.0,True
-seasonal,3,Rice (imported) | Borno,Rice (imported),Borno,24318,0.5155560000000001,0.0,True
-seasonal,3,Millet | Yobe,Millet,Yobe,24318,0.5030329056846852,0.0,True
-seasonal,3,Onions | Yobe,Onions,Yobe,24318,0.4401751252952361,0.0,True
-seasonal,3,Onions | Borno,Onions,Borno,24318,0.3793185185185184,0.0,True
-seasonal,3,Sorghum | Borno,Sorghum,Borno,24318,0.3701736842105261,0.0,True
-seasonal,3,Groundnuts | Yobe,Groundnuts,Yobe,24318,0.3356102053399308,0.0,True
-seasonal,3,Cowpeas | Yobe,Cowpeas,Yobe,24318,0.3246375000000001,0.0,True
-seasonal,3,Rice (local) | Yobe,Rice (local),Yobe,24318,0.3093557560506557,0.0,True
-seasonal,3,Rice (local) | Borno,Rice (local),Borno,24318,0.2583333333333333,0.0,True
-seasonal,3,Millet | Borno,Millet,Borno,24318,0.2296042105263158,0.0,True
-seasonal,3,Groundnuts | Borno,Groundnuts,Borno,24318,0.1911119999999999,0.0,True
-seasonal,3,Beans (red) | Yobe,Beans (red),Yobe,24318,0.1596817317913861,0.0,True
-seasonal,3,Watermelons | Yobe,Watermelons,Yobe,24318,0.1588761219369452,0.0,True
-seasonal,3,Beans (white) | Yobe,Beans (white),Yobe,24318,0.1552815374537537,0.0,True
-seasonal,3,Maize flour | Yobe,Maize flour,Yobe,24318,0.1444903054765556,0.0,True
-seasonal,3,Maize flour | Borno,Maize flour,Borno,24318,0.1264367816091951,0.0,True
-seasonal,3,Rice (imported) | Yobe,Rice (imported),Yobe,24318,0.1148648475219262,0.0,True
-seasonal,3,Sugar | Yobe,Sugar,Yobe,24318,0.1030040314797351,0.0,True
-seasonal,3,Tomatoes | Yobe,Tomatoes,Yobe,24318,0.0957917381740833,0.0,True
-seasonal,3,Yam | Yobe,Yam,Yobe,24318,0.09375,0.0,True
-seasonal,3,Sugar | Borno,Sugar,Borno,24318,0.0867192237719829,0.0,True
-seasonal,3,Beans (white) | Borno,Beans (white),Borno,24318,0.0816761904761904,0.0,True
-seasonal,3,Oranges | Yobe,Oranges,Yobe,24318,0.0081280322600969,0.0,True
-seasonal,3,Milk (powder) | Yobe,Milk (powder),Yobe,24318,0.0,0.0,True
-seasonal,3,Salt | Borno,Salt,Borno,24318,0.0,0.0,True
-seasonal,3,Yam | Borno,Yam,Borno,24318,-0.0139165009940357,0.0,False
-seasonal,3,Meat (goat) | Borno,Meat (goat),Borno,24318,-0.0175438596491228,0.0,False
-seasonal,3,Beans (red) | Borno,Beans (red),Borno,24318,-0.0338164251207729,0.0,False
-seasonal,3,Spinach | Yobe,Spinach,Yobe,24318,-0.0350284666602336,0.0,False
-seasonal,3,Watermelons | Borno,Watermelons,Borno,24318,-0.0406015037593984,0.0,False
-seasonal,3,Tomatoes | Borno,Tomatoes,Borno,24318,-0.0603047619047619,0.0,False
-seasonal,3,Milk (powder) | Borno,Milk (powder),Borno,24318,-0.0775862499999999,0.0,False
-seasonal,3,Bananas | Yobe,Bananas,Yobe,24318,-0.13190768301173,0.0,False
-seasonal,3,Meat (beef) | Borno,Meat (beef),Borno,24318,-0.1440329218106996,0.0,False
-seasonal,3,Salt | Yobe,Salt,Yobe,24318,-0.1666666666666666,0.0,False
-seasonal,3,Oranges | Borno,Oranges,Borno,24318,-0.186775,0.0,False
-seasonal,3,Meat (beef) | Yobe,Meat (beef),Yobe,24318,-0.19359,0.0,False
-seasonal,3,Meat (goat) | Yobe,Meat (goat),Yobe,24318,-0.3022384964325004,0.0,False
-seasonal,3,Bananas | Borno,Bananas,Borno,24318,-0.4911653585376091,0.0,False
-seasonal,3,Fish | Borno,Fish,Borno,24318,-0.4940153846153846,0.0,False
-seasonal,3,Fish | Yobe,Fish,Yobe,24318,-0.5789473684210527,0.0,False
+lightgbm,3,Salt | Yobe,Salt,Yobe,24322,0.18848321187743944,0.0567876914682506,True
+lightgbm,3,Sugar | Yobe,Sugar,Yobe,24322,0.04070895432964599,0.0567876914682506,False
+lightgbm,3,Meat (goat) | Yobe,Meat (goat),Yobe,24322,0.013919503413447373,0.0567876914682506,False
+lightgbm,3,Tomatoes | Borno,Tomatoes,Borno,24322,0.010037910211583003,0.0567876914682506,False
+lightgbm,3,Meat (beef) | Yobe,Meat (beef),Yobe,24322,0.009137590359932349,0.0567876914682506,False
+lightgbm,3,Meat (beef) | Borno,Meat (beef),Borno,24322,0.008802657653442004,0.0567876914682506,False
+lightgbm,3,Meat (goat) | Borno,Meat (goat),Borno,24322,0.00806908923851848,0.0567876914682506,False
+lightgbm,3,Onions | Yobe,Onions,Yobe,24322,0.007101896559240517,0.0567876914682506,False
+lightgbm,3,Onions | Borno,Onions,Borno,24322,0.006667440118871336,0.0567876914682506,False
+lightgbm,3,Oranges | Borno,Oranges,Borno,24322,0.002600753198966339,0.0567876914682506,False
+lightgbm,3,Oranges | Yobe,Oranges,Yobe,24322,0.0017590133912362663,0.0567876914682506,False
+lightgbm,3,Salt | Borno,Salt,Borno,24322,-0.0013330002913822508,0.0567876914682506,False
+lightgbm,3,Rice (imported) | Borno,Rice (imported),Borno,24322,-0.006072215875572435,0.0567876914682506,False
+lightgbm,3,Rice (imported) | Yobe,Rice (imported),Yobe,24322,-0.00639258234266783,0.0567876914682506,False
+lightgbm,3,Yam | Yobe,Yam,Yobe,24322,-0.010413629263617698,0.0567876914682506,False
+lightgbm,3,Watermelons | Yobe,Watermelons,Yobe,24322,-0.010741462097391144,0.0567876914682506,False
+lightgbm,3,Tomatoes | Yobe,Tomatoes,Yobe,24322,-0.012352430467709065,0.0567876914682506,False
+lightgbm,3,Watermelons | Borno,Watermelons,Borno,24322,-0.014783046997231885,0.0567876914682506,False
+lightgbm,3,Rice (local) | Yobe,Rice (local),Yobe,24322,-0.015487450657821917,0.0567876914682506,False
+lightgbm,3,Beans (white) | Yobe,Beans (white),Yobe,24322,-0.015933767874292976,0.0567876914682506,False
+lightgbm,3,Millet | Yobe,Millet,Yobe,24322,-0.016179136793875,0.0567876914682506,False
+lightgbm,3,Rice (local) | Borno,Rice (local),Borno,24322,-0.01629244469022612,0.0567876914682506,False
+lightgbm,3,Yam | Borno,Yam,Borno,24322,-0.016356750446520033,0.0567876914682506,False
+lightgbm,3,Cowpeas | Yobe,Cowpeas,Yobe,24322,-0.01640789567405223,0.0567876914682506,False
+lightgbm,3,Millet | Borno,Millet,Borno,24322,-0.016585956048825606,0.0567876914682506,False
+lightgbm,3,Groundnuts | Borno,Groundnuts,Borno,24322,-0.017263681438210925,0.0567876914682506,False
+lightgbm,3,Bananas | Yobe,Bananas,Yobe,24322,-0.017600778173741206,0.0567876914682506,False
+lightgbm,3,Beans (red) | Yobe,Beans (red),Yobe,24322,-0.0179702261676266,0.0567876914682506,False
+lightgbm,3,Sorghum | Yobe,Sorghum,Yobe,24322,-0.01835077692252982,0.0567876914682506,False
+lightgbm,3,Maize flour | Borno,Maize flour,Borno,24322,-0.018485195546182172,0.0567876914682506,False
+lightgbm,3,Maize flour | Yobe,Maize flour,Yobe,24322,-0.018485195546182172,0.0567876914682506,False
+lightgbm,3,Beans (white) | Borno,Beans (white),Borno,24322,-0.020146778673904266,0.0567876914682506,False
+lightgbm,3,Spinach | Yobe,Spinach,Yobe,24322,-0.02281126813275083,0.0567876914682506,False
+lightgbm,3,Bananas | Borno,Bananas,Borno,24322,-0.024716173974012927,0.0567876914682506,False
+lightgbm,3,Fish | Yobe,Fish,Yobe,24322,-0.027673974872646473,0.0567876914682506,False
+lightgbm,3,Fish | Borno,Fish,Borno,24322,-0.02941660471109217,0.0567876914682506,False
+lightgbm,3,Groundnuts | Yobe,Groundnuts,Yobe,24322,-0.033630210292107984,0.0567876914682506,False
+lightgbm,3,Beans (red) | Borno,Beans (red),Borno,24322,-0.03363154040802519,0.0567876914682506,False
+lightgbm,3,Sorghum | Borno,Sorghum,Borno,24322,-0.035246320706342774,0.0567876914682506,False
+lightgbm,3,Milk (powder) | Borno,Milk (powder),Borno,24322,-0.12208914155608602,0.0567876914682506,False
+lightgbm,3,Milk (powder) | Yobe,Milk (powder),Yobe,24322,-0.12208914155608602,0.0567876914682506,False
+lightgbm,3,Sugar | Borno,Sugar,Borno,24322,-0.1587155622571896,0.0567876914682506,False
+lightgbm_fx,3,Salt | Yobe,Salt,Yobe,24322,0.27125861886654823,0.068506308478798,True
+lightgbm_fx,3,Sugar | Yobe,Sugar,Yobe,24322,0.04531378163038921,0.068506308478798,False
+lightgbm_fx,3,Meat (goat) | Yobe,Meat (goat),Yobe,24322,0.022699588081386866,0.068506308478798,False
+lightgbm_fx,3,Onions | Borno,Onions,Borno,24322,0.018325540298565212,0.068506308478798,False
+lightgbm_fx,3,Onions | Yobe,Onions,Yobe,24322,0.018209922606438472,0.068506308478798,False
+lightgbm_fx,3,Meat (goat) | Borno,Meat (goat),Borno,24322,0.01816103961486193,0.068506308478798,False
+lightgbm_fx,3,Meat (beef) | Borno,Meat (beef),Borno,24322,0.01798880353511357,0.068506308478798,False
+lightgbm_fx,3,Meat (beef) | Yobe,Meat (beef),Yobe,24322,0.01798880353511357,0.068506308478798,False
+lightgbm_fx,3,Tomatoes | Borno,Tomatoes,Borno,24322,0.017412112097657143,0.068506308478798,False
+lightgbm_fx,3,Oranges | Borno,Oranges,Borno,24322,0.014298080093149557,0.068506308478798,False
+lightgbm_fx,3,Oranges | Yobe,Oranges,Yobe,24322,0.014298080093149557,0.068506308478798,False
+lightgbm_fx,3,Millet | Yobe,Millet,Yobe,24322,0.012173223768080397,0.068506308478798,False
+lightgbm_fx,3,Beans (red) | Yobe,Beans (red),Yobe,24322,0.010566165173647658,0.068506308478798,False
+lightgbm_fx,3,Salt | Borno,Salt,Borno,24322,0.009813289463830761,0.068506308478798,False
+lightgbm_fx,3,Rice (imported) | Borno,Rice (imported),Borno,24322,0.007854642110795335,0.068506308478798,False
+lightgbm_fx,3,Rice (imported) | Yobe,Rice (imported),Yobe,24322,0.007854642110795335,0.068506308478798,False
+lightgbm_fx,3,Tomatoes | Yobe,Tomatoes,Yobe,24322,0.0068798999986826636,0.068506308478798,False
+lightgbm_fx,3,Groundnuts | Yobe,Groundnuts,Yobe,24322,0.006855153171869875,0.068506308478798,False
+lightgbm_fx,3,Sorghum | Yobe,Sorghum,Yobe,24322,0.003477619458690274,0.068506308478798,False
+lightgbm_fx,3,Cowpeas | Yobe,Cowpeas,Yobe,24322,0.0021876314931068824,0.068506308478798,False
+lightgbm_fx,3,Watermelons | Yobe,Watermelons,Yobe,24322,0.0013559162576467253,0.068506308478798,False
+lightgbm_fx,3,Millet | Borno,Millet,Borno,24322,0.0007033096757189362,0.068506308478798,False
+lightgbm_fx,3,Beans (white) | Yobe,Beans (white),Yobe,24322,0.0004092278174709067,0.068506308478798,False
+lightgbm_fx,3,Yam | Yobe,Yam,Yobe,24322,7.17303235446148e-05,0.068506308478798,False
+lightgbm_fx,3,Rice (local) | Yobe,Rice (local),Yobe,24322,-0.00012058995033625662,0.068506308478798,False
+lightgbm_fx,3,Beans (white) | Borno,Beans (white),Borno,24322,-0.00042591194031971316,0.068506308478798,False
+lightgbm_fx,3,Yam | Borno,Yam,Borno,24322,-0.0005021427997165884,0.068506308478798,False
+lightgbm_fx,3,Bananas | Yobe,Bananas,Yobe,24322,-0.0006841698926601167,0.068506308478798,False
+lightgbm_fx,3,Rice (local) | Borno,Rice (local),Borno,24322,-0.0006943527140773455,0.068506308478798,False
+lightgbm_fx,3,Maize flour | Borno,Maize flour,Borno,24322,-0.000943410043894049,0.068506308478798,False
+lightgbm_fx,3,Maize flour | Yobe,Maize flour,Yobe,24322,-0.000943410043894049,0.068506308478798,False
+lightgbm_fx,3,Groundnuts | Borno,Groundnuts,Borno,24322,-0.0016237378314930674,0.068506308478798,False
+lightgbm_fx,3,Watermelons | Borno,Watermelons,Borno,24322,-0.007817612042838993,0.068506308478798,False
+lightgbm_fx,3,Bananas | Borno,Bananas,Borno,24322,-0.009024256624025648,0.068506308478798,False
+lightgbm_fx,3,Beans (red) | Borno,Beans (red),Borno,24322,-0.01374410088965603,0.068506308478798,False
+lightgbm_fx,3,Sorghum | Borno,Sorghum,Borno,24322,-0.016960308768562308,0.068506308478798,False
+lightgbm_fx,3,Spinach | Yobe,Spinach,Yobe,24322,-0.018719870859911367,0.068506308478798,False
+lightgbm_fx,3,Fish | Borno,Fish,Borno,24322,-0.030295866013498075,0.068506308478798,False
+lightgbm_fx,3,Fish | Yobe,Fish,Yobe,24322,-0.030295866013498075,0.068506308478798,False
+lightgbm_fx,3,Milk (powder) | Borno,Milk (powder),Borno,24322,-0.10590913097965596,0.068506308478798,False
+lightgbm_fx,3,Milk (powder) | Yobe,Milk (powder),Yobe,24322,-0.11152340739945775,0.068506308478798,False
+lightgbm_fx,3,Sugar | Borno,Sugar,Borno,24322,-0.12494918794438419,0.068506308478798,False
+sarima,3,Sugar | Borno,Sugar,Borno,24322,0.4496931896729295,0.2989859465917849,True
+sarima,3,Sugar | Yobe,Sugar,Yobe,24322,0.41943113214812827,0.2989859465917849,True
+sarima,3,Fish | Borno,Fish,Borno,24322,0.1793543429032181,0.2989859465917849,False
+sarima,3,Watermelons | Yobe,Watermelons,Yobe,24322,0.1790432720594794,0.2989859465917849,False
+sarima,3,Meat (beef) | Yobe,Meat (beef),Yobe,24322,0.08709375573826311,0.2989859465917849,False
+sarima,3,Meat (goat) | Yobe,Meat (goat),Yobe,24322,0.08387217380104225,0.2989859465917849,False
+sarima,3,Meat (beef) | Borno,Meat (beef),Borno,24322,0.07087290909006377,0.2989859465917849,False
+sarima,3,Bananas | Borno,Bananas,Borno,24322,0.06164352889065143,0.2989859465917849,False
+sarima,3,Sorghum | Yobe,Sorghum,Yobe,24322,0.031525008911560716,0.2989859465917849,False
+sarima,3,Milk (powder) | Borno,Milk (powder),Borno,24322,0.006021344369052468,0.2989859465917849,False
+sarima,3,Meat (goat) | Borno,Meat (goat),Borno,24322,0.005775214390210584,0.2989859465917849,False
+sarima,3,Tomatoes | Yobe,Tomatoes,Yobe,24322,0.0,0.2989859465917849,False
+sarima,3,Milk (powder) | Yobe,Milk (powder),Yobe,24322,-0.010516166852996583,0.2989859465917849,False
+sarima,3,Beans (red) | Borno,Beans (red),Borno,24322,-0.013784952444575178,0.2989859465917849,False
+sarima,3,Oranges | Borno,Oranges,Borno,24322,-0.021984265112396123,0.2989859465917849,False
+sarima,3,Maize flour | Yobe,Maize flour,Yobe,24322,-0.026856601431045173,0.2989859465917849,False
+sarima,3,Salt | Borno,Salt,Borno,24322,-0.02783865014990686,0.2989859465917849,False
+sarima,3,Yam | Borno,Yam,Borno,24322,-0.03416368676754496,0.2989859465917849,False
+sarima,3,Maize flour | Borno,Maize flour,Borno,24322,-0.036262857142856986,0.2989859465917849,False
+sarima,3,Yam | Yobe,Yam,Yobe,24322,-0.0456388779191128,0.2989859465917849,False
+sarima,3,Beans (red) | Yobe,Beans (red),Yobe,24322,-0.05037287106195367,0.2989859465917849,False
+sarima,3,Sorghum | Borno,Sorghum,Borno,24322,-0.05580985745115234,0.2989859465917849,False
+sarima,3,Watermelons | Borno,Watermelons,Borno,24322,-0.05840591983925536,0.2989859465917849,False
+sarima,3,Oranges | Yobe,Oranges,Yobe,24322,-0.06609833474892048,0.2989859465917849,False
+sarima,3,Onions | Yobe,Onions,Yobe,24322,-0.06876274481908243,0.2989859465917849,False
+sarima,3,Millet | Yobe,Millet,Yobe,24322,-0.0807815172723476,0.2989859465917849,False
+sarima,3,Rice (local) | Yobe,Rice (local),Yobe,24322,-0.08441496865853174,0.2989859465917849,False
+sarima,3,Spinach | Yobe,Spinach,Yobe,24322,-0.08669132657109486,0.2989859465917849,False
+sarima,3,Rice (imported) | Borno,Rice (imported),Borno,24322,-0.09063272727272695,0.2989859465917849,False
+sarima,3,Rice (local) | Borno,Rice (local),Borno,24322,-0.09254843749999975,0.2989859465917849,False
+sarima,3,Salt | Yobe,Salt,Yobe,24322,-0.09639642895868783,0.2989859465917849,False
+sarima,3,Bananas | Yobe,Bananas,Yobe,24322,-0.10570183056741421,0.2989859465917849,False
+sarima,3,Groundnuts | Borno,Groundnuts,Borno,24322,-0.10780267767654722,0.2989859465917849,False
+sarima,3,Beans (white) | Borno,Beans (white),Borno,24322,-0.1150062376406039,0.2989859465917849,False
+sarima,3,Beans (white) | Yobe,Beans (white),Yobe,24322,-0.12166557474548975,0.2989859465917849,False
+sarima,3,Cowpeas | Yobe,Cowpeas,Yobe,24322,-0.12977359723632498,0.2989859465917849,False
+sarima,3,Millet | Borno,Millet,Borno,24322,-0.13684665056315473,0.2989859465917849,False
+sarima,3,Onions | Borno,Onions,Borno,24322,-0.14263125681642075,0.2989859465917849,False
+sarima,3,Groundnuts | Yobe,Groundnuts,Yobe,24322,-0.16709656888870467,0.2989859465917849,False
+sarima,3,Fish | Yobe,Fish,Yobe,24322,-0.2747055503053893,0.2989859465917849,False
+sarima,3,Tomatoes | Borno,Tomatoes,Borno,24322,-0.2921127710919113,0.2989859465917849,False
+sarima,3,Rice (imported) | Yobe,Rice (imported),Yobe,24322,-0.41390375586854444,0.2989859465917849,False
+seasonal,3,Salt | Yobe,Salt,Yobe,24322,0.6071485969592747,0.0,True
+seasonal,3,Rice (imported) | Borno,Rice (imported),Borno,24322,0.2503799999999996,0.0,True
+seasonal,3,Groundnuts | Yobe,Groundnuts,Yobe,24322,0.0731183333333334,0.0,True
+seasonal,3,Meat (beef) | Borno,Meat (beef),Borno,24322,0.040503759398496264,0.0,True
+seasonal,3,Meat (beef) | Yobe,Meat (beef),Yobe,24322,0.03225900000000004,0.0,True
+seasonal,3,Groundnuts | Borno,Groundnuts,Borno,24322,0.026298909557408656,0.0,True
+seasonal,3,Milk (powder) | Borno,Milk (powder),Borno,24322,0.0,0.0,True
+seasonal,3,Salt | Borno,Salt,Borno,24322,0.0,0.0,True
+seasonal,3,Tomatoes | Yobe,Tomatoes,Yobe,24322,0.0,0.0,True
+seasonal,3,Meat (goat) | Borno,Meat (goat),Borno,24322,-0.009792857142857159,0.0,False
+seasonal,3,Milk (powder) | Yobe,Milk (powder),Yobe,24322,-0.01907410404680987,0.0,False
+seasonal,3,Maize flour | Borno,Maize flour,Borno,24322,-0.049338526664674975,0.0,False
+seasonal,3,Watermelons | Borno,Watermelons,Borno,24322,-0.05362776025236593,0.0,False
+seasonal,3,Spinach | Yobe,Spinach,Yobe,24322,-0.08629905431952123,0.0,False
+seasonal,3,Oranges | Yobe,Oranges,Yobe,24322,-0.08860990225341192,0.0,False
+seasonal,3,Bananas | Yobe,Bananas,Yobe,24322,-0.09019742725459157,0.0,False
+seasonal,3,Cowpeas | Yobe,Cowpeas,Yobe,24322,-0.11364335649324153,0.0,False
+seasonal,3,Rice (local) | Borno,Rice (local),Borno,24322,-0.11557930515665482,0.0,False
+seasonal,3,Rice (local) | Yobe,Rice (local),Yobe,24322,-0.12294938855790893,0.0,False
+seasonal,3,Yam | Borno,Yam,Borno,24322,-0.12395112395112395,0.0,False
+seasonal,3,Maize flour | Yobe,Maize flour,Yobe,24322,-0.12693217126218903,0.0,False
+seasonal,3,Millet | Yobe,Millet,Yobe,24322,-0.13634463199995994,0.0,False
+seasonal,3,Sorghum | Yobe,Sorghum,Yobe,24322,-0.14179664871591313,0.0,False
+seasonal,3,Sorghum | Borno,Sorghum,Borno,24322,-0.14471308098251978,0.0,False
+seasonal,3,Meat (goat) | Yobe,Meat (goat),Yobe,24322,-0.1528747826086958,0.0,False
+seasonal,3,Yam | Yobe,Yam,Yobe,24322,-0.1606037874630769,0.0,False
+seasonal,3,Millet | Borno,Millet,Borno,24322,-0.16666666666666685,0.0,False
+seasonal,3,Beans (red) | Borno,Beans (red),Borno,24322,-0.1877262182482179,0.0,False
+seasonal,3,Onions | Yobe,Onions,Yobe,24322,-0.20420651645323384,0.0,False
+seasonal,3,Beans (white) | Borno,Beans (white),Borno,24322,-0.22097070849863965,0.0,False
+seasonal,3,Onions | Borno,Onions,Borno,24322,-0.22787717443787592,0.0,False
+seasonal,3,Bananas | Borno,Bananas,Borno,24322,-0.2481208791208792,0.0,False
+seasonal,3,Beans (white) | Yobe,Beans (white),Yobe,24322,-0.2544993482920519,0.0,False
+seasonal,3,Oranges | Borno,Oranges,Borno,24322,-0.2594623655913979,0.0,False
+seasonal,3,Beans (red) | Yobe,Beans (red),Yobe,24322,-0.2607801356838061,0.0,False
+seasonal,3,Watermelons | Yobe,Watermelons,Yobe,24322,-0.33870999999999996,0.0,False
+seasonal,3,Tomatoes | Borno,Tomatoes,Borno,24322,-0.35329496216775524,0.0,False
+seasonal,3,Rice (imported) | Yobe,Rice (imported),Yobe,24322,-0.3758075000000002,0.0,False
+seasonal,3,Fish | Borno,Fish,Borno,24322,-0.4258993973670182,0.0,False
+seasonal,3,Fish | Yobe,Fish,Yobe,24322,-0.44014843862831354,0.0,False
+seasonal,3,Sugar | Borno,Sugar,Borno,24322,-0.7894600672102735,0.0,False
+seasonal,3,Sugar | Yobe,Sugar,Yobe,24322,-0.7913907249687198,0.0,False

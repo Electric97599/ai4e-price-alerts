@@ -18,6 +18,10 @@ Proposal_LaTeX/*.toc
 outputs/review_log.csv
 outputs/_resource_runs/
 
+# Saved final-origin models: 32 MB of pickles, rebuilt in under a minute by
+# `python src/fit_final.py`, so they are not committed
+models/
+
 # Editor and OS noise
 .DS_Store
 Thumbs.db

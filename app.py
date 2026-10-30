@@ -97,7 +97,7 @@ with tab_history:
 with tab_queue:
     st.subheader("Latest scored-month alert queue")
     if alerts is None:
-        st.info("Run `python src/score_alerts.py` after the model and fold scripts.")
+        st.info("Run `python src/fit_final.py` then `python src/score_latest.py`.")
     else:
         alerts = with_date(alerts)
         models = sorted(alerts["model"].unique())

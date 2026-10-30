@@ -37,11 +37,13 @@ def months_for_fold(fold_label=None):
     return sorted(months)
 
 
-def forecast_one(origin_values, warm_starts=None):
-    """Select the lowest-AIC fit and return forecast plus next-origin warm starts.
+def select_fit(origin_values, warm_starts=None):
+    """Choose the lowest-AIC fit that also yields a finite one-step score.
 
-    Orders are still refit and compared by AIC at every origin. Starting each optimizer
-    from the same order's previous-month estimate cuts repeated optimization time.
+    Every candidate is refitted at this origin and compared by AIC, so the saved fit is the
+    model the fold calendar would have used. The return is (results object, order, predicted
+    percentage change, warm starts for the next origin). `src/fit_final.py` keeps the
+    results object so the monthly scorer can forecast without refitting.
     """
     warm_starts = {} if warm_starts is None else warm_starts
     candidates = []
@@ -69,25 +71,31 @@ def forecast_one(origin_values, warm_starts=None):
                     result = model.fit(method="lbfgs", disp=False,
                                        maxiter=model_config.SARIMA_MAXITER)
             if np.isfinite(result.aic):
-                candidates.append((float(result.aic), result))
+                candidates.append((float(result.aic), order, result))
                 next_starts[order] = np.asarray(result.params, dtype=float)
         except Exception:
             continue
     if not candidates:
-        return None, next_starts
+        return None, None, None, next_starts
     # A few unstable candidate fits can have finite AIC but overflow when converted
     # into a price-change score. Fall through to the next-lowest-AIC finite forecast.
-    for _, result in sorted(candidates, key=lambda item: item[0]):
+    for _, order, result in sorted(candidates, key=lambda item: item[0]):
         try:
             predicted_log_price = float(
                 np.asarray(result.get_forecast(steps=1).predicted_mean).reshape(-1)[0])
             with np.errstate(over="ignore", invalid="ignore"):
                 score = float(np.expm1(predicted_log_price - origin_values[-1]))
             if np.isfinite(predicted_log_price) and np.isfinite(score):
-                return score, next_starts
+                return result, order, score, next_starts
         except Exception:
             continue
-    return None, next_starts
+    return None, None, None, next_starts
+
+
+def forecast_one(origin_values, warm_starts=None):
+    """The score of the selected fit, or None. Kept for the fold calendar's use."""
+    _, _, score, next_starts = select_fit(origin_values, warm_starts)
+    return score, next_starts
 
 
 def run(fold_label=None, output=None):

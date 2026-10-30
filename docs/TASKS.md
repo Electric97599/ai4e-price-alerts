@@ -23,7 +23,7 @@ pipeline.
 | 11 | SARIMA pipeline, one model per series | Abodunrin | #3 | #1 and #6 for comparison, not to build | `outputs/sarima_scores.csv` exists for all three folds |
 | 11 | LightGBM pipeline, without the rate | Abodunrin | #4 | #1 and #6 for comparison | `outputs/lightgbm_scores.csv` exists for all three folds |
 | 12 | LightGBM with the rate, the exchange-rate ablation | Bizima | #15 | #7 must land first | `outputs/lightgbm_fx_scores.csv` exists and the two variants differ only by that column |
-| 11 | Monthly scorer for the newest month | Abodunrin | #5 | #3 and #4, the models it loads | `outputs/alerts.csv` holds one row per model, series and month |
+| 11 | Monthly scorer for the newest month | Abodunrin | #5 | #3 and #4, the models it loads | `python src/fit_final.py` then `python src/score_latest.py` writes `outputs/alerts.csv` for the newest month, from saved models only |
 | 13 | Penalty sensitivity and subgroup tables | Dufitumukiz | #8 | #6, and scored results from #3 and #4 | `python src/report_tables.py` writes k = 1, 3, 5 and the subgroup tables |
 | 13 | Timing and memory of a full pass | Dufitumukiz | #9 | #3 and #4, the runs being timed | `python src/resources.py` prints wall clock and peak memory per fold |
 | 14 | Demo app wired to the live alert file | Abodunrin | #10 | #5 for alerts, #6 for the fold table | Streamlit Cloud link works from a phone, alert queue reads `alerts.csv` |

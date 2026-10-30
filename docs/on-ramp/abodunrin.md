@@ -21,9 +21,11 @@ You also own the repository itself, so you merge the pull requests.
 7. `README.md`, section "Modelling rules the proposal leaves to the repository", for the
    SARIMA order rule, the LightGBM feature list and the gap rule you agreed to.
 
-The model runners are `src/sarima.py` and `src/lightgbm_pipeline.py`; the monthly alert
-writer is `src/score_alerts.py`. Each writes the shared `series, mi, score` format, and
-`src/run_all.py` connects them to the calibration harness, report tables and app.
+The model runners are `src/sarima.py` and `src/lightgbm_pipeline.py`. The monthly path is
+`src/fit_final.py` (fit once at the newest origin, save with joblib through
+`src/model_store.py`) then `src/score_latest.py` (load what was saved, write
+`outputs/alerts.csv`, never fit). Each fold runner writes the shared `series, mi, score`
+format, and `src/run_all.py` connects them to the calibration harness, report tables and app.
 
 ## What each task produces
 
