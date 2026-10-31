@@ -25,6 +25,8 @@ python src/panel.py       # rebuild the panel, prints the Table 1 counts
 python src/metrics.py     # self tests for every measure, must pass
 python src/folds.py       # the three windows; 1,452 cells, 355 rises, 24.4 percent
 python src/baseline.py    # seasonal naive and persistence reference scores
+python src/fit_final.py   # fit the rules at the newest origin, save them with joblib
+python src/score_latest.py  # newest month scored from those saved models, no refit
 streamlit run app.py      # the demo app
 ```
 

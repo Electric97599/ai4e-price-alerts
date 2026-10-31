@@ -66,7 +66,8 @@ def main():
     combined.to_csv(os.path.join(OUT, "fold_table.csv"), index=False)
     print("\ncombined fold table: 4 rules x 3 folds = 12 rows", flush=True)
 
-    run("src/score_alerts.py")
+    run("src/fit_final.py")
+    run("src/score_latest.py")
     run("src/report_tables.py")
     if not args.skip_resources:
         run("src/resources.py")

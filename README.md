@@ -100,7 +100,9 @@ src/features_fx.py  #7: forecast-origin CBN rate join (Bizima)
 src/sarima.py       #3: per-series SARIMA forecasts (Abodunrin)
 src/lightgbm_pipeline.py #4: pooled LightGBM with/without lagged rate (Abodunrin)
 src/model_config.py fixed model settings for both learned models
-src/score_alerts.py #5: latest scored-month alerts (Abodunrin)
+src/score_latest.py #5: newest month scored from saved models (Abodunrin)
+src/fit_final.py    #4: fits the rules once at the newest origin and saves them
+src/model_store.py  the joblib bundle the scorer reads and the fit writes
 src/report_tables.py #8: weighted penalties and subgroup tables (Dufitumukiz)
 src/resources.py    #9: per-model/per-fold time and sampled peak memory (Dufitumukiz)
 scripts/check_data.py #2: checksums and price-file profile (Ogunkoya)
@@ -114,7 +116,8 @@ outputs/monthly.csv every observed month of the eligible series, so gaps stay vi
 outputs/baseline_scores.csv   calibration and scored cells with both reference scores
 outputs/baseline_folds.csv    the frozen thresholds and the reference results per fold
 outputs/fold_table.csv        calibration/scored metrics for all four forecast rules
-outputs/alerts.csv            latest scored month, with outcomes withheld from the app
+outputs/alerts.csv            newest month, with outcomes withheld from the app
+models/final_origin.joblib    the saved fits behind alerts.csv, regenerated, not committed
 ```
 
 ## Reproduce
@@ -175,6 +178,12 @@ fixed here rather than in the two page proposal because they are implementation 
   it records changes regime in June 2023, from the pegged official rate to a market rate, so
   the ablation measures whether adding the official rate helps and not whether a free
   floating rate helps. All 52 months the folds use are present.
+- **Monthly scoring**: `src/fit_final.py` fits the two LightGBM variants and one SARIMA per
+  series once, at the newest origin the price file supports, and saves them with joblib.
+  `src/score_latest.py` loads that bundle and writes `outputs/alerts.csv` for the newest
+  month, so the scorer and the app never refit. The threshold it applies is the fold 3 value
+  frozen in `outputs/fold_table.csv`, read and never recomputed, because a threshold set on
+  the month being scored would defeat the calibration rule.
 - **Price flags**: every flag in the source file is retained (actual, aggregate, and the
   combined label). The balanced market check controls which markets report; it does not
   remove the shift from quotations to aggregates, so that shift is stated as a limit.
