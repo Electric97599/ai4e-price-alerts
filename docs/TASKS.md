@@ -16,7 +16,7 @@ pipeline.
 
 | Week | Task | Owner | Issue | Depends on | Done when |
 |---|---|---|---|---|---|
-| 10 | Seasonal baseline with coverage and the balanced market check | Ogunkoya | #1 | nothing, the panel exists | `python src/baseline.py` prints 270 / 448 / 488 coverage and `python src/panel.py` prints the 29 of 53 market check |
+| 10 | Seasonal baseline with coverage and the balanced market check | Ogunkoya | #1 | nothing, the panel exists | `python src/baseline.py` prints seasonal coverage of 270 / 448 / 488 of 472 / 472 / 508 scored cells; both it and `python src/panel.py` print the same computed full-panel and balanced-market comparison, including markets, eligible series, contributing series (those with scored cells), scored cells, rises and rise rate |
 | 10 | Frozen snapshot verified by script | Ogunkoya | #2 | nothing | `python scripts/check_data.py` passes from a fresh clone |
 | 10 | Exchange rate feature builder | Bizima | #7 | nothing, the rate file is frozen | `outputs/panel_fx.csv` exists and every scored month has a rate |
 | 10 | Fold runner and calibration harness | Bizima | #6 | #1 only to test against its score file | `python src/run_folds.py --scores outputs/baseline_scores.csv --column naive_score` reproduces the reference numbers |
