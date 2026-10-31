@@ -27,6 +27,7 @@ sys.path.insert(0, HERE)
 
 import folds as folds_mod          # noqa: E402
 import metrics as metrics_mod      # noqa: E402
+import panel as panel_mod          # noqa: E402
 
 PANEL = os.path.join(ROOT, "outputs", "panel.csv")
 MONTHLY = os.path.join(ROOT, "outputs", "monthly.csv")
@@ -152,6 +153,9 @@ def main():
     print("wrote %s (frozen thresholds and the reference results)" % os.path.relpath(fold_out, ROOT))
     print("The seasonal rule cannot cover every cell, so it is scored on the cells where a "
           "year-earlier price exists. Report any model beside it on those same cells.")
+    print()
+    raw = pd.read_csv(os.path.join(ROOT, "data", "nigeria", "wfp_food_prices_nga.csv"))
+    panel_mod.print_comparison(panel_mod.comparison_table(raw))
 
 
 if __name__ == "__main__":
