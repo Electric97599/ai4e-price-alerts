@@ -107,6 +107,9 @@ def score_fold(cells, fold, model):
                   if len(test_covered) else np.nan,
         "realized_fpr": metrics.false_positive_rate(test_covered["score"], covered_rises,
                                                     threshold) if len(test_covered) else np.nan,
+        # The threshold is chosen on calibration cells only, so the scored-window rate can
+        # land above or below the cap. Show the cap beside it in every fold.
+        "fpr_target": metrics.MAX_FPR,
         "precision_recall_area": pr_auc,
         "mae_model": mae_model,
         "mae_naive_common": mae_naive,
@@ -147,6 +150,16 @@ def main():
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     table.to_csv(out_path, index=False)
     print(table.to_string(index=False))
+    print("\nrealized false alarm rate against the %.0f%% target:" % (100 * metrics.MAX_FPR))
+    for row in rows:
+        fpr = row["realized_fpr"]
+        if not np.isfinite(fpr):
+            status = "no covered cells"
+        elif fpr > row["fpr_target"] + 1e-12:
+            status = "above target by %.1f points" % (100 * (fpr - row["fpr_target"]))
+        else:
+            status = "within target, %.1f points below" % (100 * (row["fpr_target"] - fpr))
+        print("  %s fold %s: %.1f%% (%s)" % (row["model"], row["fold"], 100 * fpr, status))
     print("\nwrote %s" % os.path.relpath(out_path, ROOT))
 
 
