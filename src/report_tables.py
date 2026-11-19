@@ -61,36 +61,75 @@ def load_cells(model, fold, threshold):
 
 
 def penalty_table(fold_table, k_values=(1, 3, 5)):
-    """Compare weighted penalty within covered cells and across all cells."""
-    rows = []
+    """Evaluate penalties on covered, all, and identical common scored cells.
+
+    The common-cell comparison intersects available (series, mi) forecasts within
+    each fold. Each rule keeps the threshold calibrated by the fold harness.
+    An uncovered all-cell observation is treated as a missed alert, not dropped.
+    """
+    cached = {}
     for record in fold_table.to_dict("records"):
         model, fold = str(record["model"]), str(record["fold"])
         if model not in MODEL_FILES:
             continue
-        cells = load_cells(model, fold, record["threshold"])
-        covered = cells[cells["score"].notna()]
+        key = (model, fold)
+        if key in cached:
+            raise SystemExit("duplicate model/fold in fold table: %s fold %s" % key)
+        cached[key] = (record, load_cells(model, fold, record["threshold"]))
+
+    common_keys = {}
+    for fold in sorted({f for _, f in cached}):
+        available = [
+            set(zip(cells.loc[cells["score"].notna(), "series"],
+                    cells.loc[cells["score"].notna(), "mi"]))
+            for (model, f), (record, cells) in cached.items() if f == fold
+        ]
+        common_keys[fold] = set.intersection(*available) if available else set()
+
+    rows = []
+    for (model, fold), (record, cells) in cached.items():
+        threshold = float(record["threshold"])
+        covered = cells[cells["score"].notna()].copy()
+        common = covered[
+            pd.MultiIndex.from_frame(covered[["series", "mi"]]).isin(common_keys[fold])
+        ]
         covered_alerts = covered["alert"].to_numpy(dtype=bool)
         covered_rises = covered["rise"].to_numpy(dtype=int)
         all_alerts = cells["alert"].to_numpy(dtype=bool)
         all_rises = cells["rise"].to_numpy(dtype=int)
+        common_alerts = common["alert"].to_numpy(dtype=bool)
+        common_rises = common["rise"].to_numpy(dtype=int)
+        covered_counts = metrics.confusion(covered["score"], covered_rises, threshold) if len(covered) else {
+            "tp": 0, "fp": 0, "fn": 0, "tn": 0}
+        common_counts = metrics.confusion(common["score"], common_rises, threshold) if len(common) else {
+            "tp": 0, "fp": 0, "fn": 0, "tn": 0}
+
         for k in k_values:
-            counts = metrics.confusion(covered["score"], covered_rises,
-                                       float(record["threshold"])) if len(covered) else {
-                                           "tp": 0, "fp": 0, "fn": 0, "tn": 0}
             rows.append({
                 "table": "penalty", "model": model, "fold": fold, "k": int(k),
                 "all_scored_cells": len(cells), "covered_cells": len(covered),
                 "coverage_percent": 100.0 * len(covered) / len(cells) if len(cells) else np.nan,
-                "alerts": int(covered_alerts.sum()), "missed_rises_covered": counts["fn"],
+                "common_scored_cells": len(common),
+                "common_rises": int(common_rises.sum()),
+                "alerts": int(covered_alerts.sum()),
+                "missed_rises_covered": covered_counts["fn"],
                 "missed_rises_all": int((~all_alerts & (all_rises == 1)).sum()),
-                "false_alarms": counts["fp"],
+                "missed_rises_common": common_counts["fn"],
+                "false_alarms": covered_counts["fp"],
+                "false_alarms_common": common_counts["fp"],
                 "penalty_per_1000_covered": metrics.weighted_penalty(
                     covered_alerts, covered_rises, k=k) if len(covered) else np.nan,
-                "penalty_per_1000_all_cells": metrics.weighted_penalty(all_alerts, all_rises, k=k),
-                "penalty_basis": "Assumed weights; covered-cell result excludes uncovered cells",
+                "penalty_per_1000_all_cells": metrics.weighted_penalty(
+                    all_alerts, all_rises, k=k) if len(cells) else np.nan,
+                "penalty_per_1000_common": metrics.weighted_penalty(
+                    common_alerts, common_rises, k=k) if len(common) else np.nan,
+                "penalty_basis": "Assumed weights; compare models on the common-cell result",
             })
-    return pd.DataFrame(rows)
-
+    penalty = pd.DataFrame(rows)
+    if not penalty.empty:
+        penalty["rank_common"] = (penalty.groupby(["fold", "k"])["penalty_per_1000_common"]
+                                   .rank(ascending=True, method="min").astype("Int64"))
+    return penalty
 
 def subgroup_table(fold_table):
     """State by fold and state/commodity across-fold groups; no small groups are pooled."""
@@ -175,12 +214,37 @@ def main():
     all_rows = pd.concat([penalty, subgroup], ignore_index=True, sort=False)
     all_rows.to_csv(OUT, index=False)
     penalty_md = "# Weighted decision penalty\n\n"
-    penalty_md += "Weights are assumptions, not measured procurement costs. Covered-cell penalty is the primary like-for-like value; the all-cell value treats an uncovered cell as no alert. Every row reports both denominators.\n\n"
-    penalty_md += markdown_table(penalty, ["model", "fold", "k", "all_scored_cells", "covered_cells",
-                                            "coverage_percent", "alerts", "missed_rises_covered",
-                                            "missed_rises_all",
-                                            "false_alarms", "penalty_per_1000_covered",
-                                            "penalty_per_1000_all_cells"])
+    penalty_md += (
+        "Weights at k = 1, 3 and 5 are assumptions, not measured procurement costs. "
+        "Every rule uses its original threshold, frozen on calibration cells. "
+        "The common-cell result uses the intersection of scored (series, month) pairs "
+        "across the rules in each fold, making model rankings directly comparable. "
+        "The covered-cell result describes each rule's own coverage and should not be "
+        "ranked against other rules with different coverage. The all-cell result treats "
+        "an uncovered cell as no alert, counting an actual rise as missed. "
+        "Every row reports its denominators; lower penalty is better.\n\n"
+    )
+    rankings = []
+    for (fold, k), group in penalty.groupby(["fold", "k"], sort=True):
+        ordered = group.sort_values(["penalty_per_1000_common", "model"])
+        ranking = ", ".join("%s (%.3f)" % (row.model, row.penalty_per_1000_common)
+                            for row in ordered.itertuples()
+                            if np.isfinite(row.penalty_per_1000_common))
+        rankings.append({"fold": fold, "k": k,
+                         "common_scored_cells": int(group["common_scored_cells"].iloc[0]),
+                         "ranking_best_to_worst": ranking or "no common cells"})
+    penalty_md += "## Model rankings on common cells\n\n"
+    penalty_md += markdown_table(pd.DataFrame(rankings),
+                                  ["fold", "k", "common_scored_cells", "ranking_best_to_worst"])
+    penalty_md += "\n\n## All penalty calculations\n\n"
+    penalty_md += markdown_table(penalty, ["model", "fold", "k", "all_scored_cells",
+                                            "covered_cells", "coverage_percent",
+                                            "common_scored_cells", "common_rises", "alerts",
+                                            "missed_rises_covered", "missed_rises_all",
+                                            "missed_rises_common", "false_alarms",
+                                            "false_alarms_common", "penalty_per_1000_covered",
+                                            "penalty_per_1000_all_cells",
+                                            "penalty_per_1000_common", "rank_common"])
     with open(os.path.join(TABLES, "penalty.md"), "w", encoding="utf-8") as fh:
         fh.write(penalty_md + "\n")
     subgroup_md = "# Subgroup results\n\n"
